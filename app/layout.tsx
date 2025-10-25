@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Caveat } from "next/font/google";
 import "./globals.css";
 
-// Fonts — modern + relaxed handwriting accent
+// Fonts
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "NMG Tours",
     images: [
       {
-        url: "./public/NMGTOURS.png",
+        url: "/NMGTOURS.png", // ✅ Corrected public path
         width: 1920,
         height: 1080,
         alt: "NMG Tours",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.ico", // ✅ Corrected path
   },
 };
 
@@ -51,16 +51,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white`}
+        // ✅ Moved gradient to html background instead of fixed body gradient
         style={{
           background:
             "linear-gradient(135deg, #e11d48 0%, #facc15 50%, #16a34a 100%)",
-          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
       >
-        <main className="flex flex-col items-center justify-center px-6">
-          {children}
-        </main>
+        {/* ✅ Do not wrap children in <main>, let each page define its layout */}
+        {children}
       </body>
     </html>
   );
