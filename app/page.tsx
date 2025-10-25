@@ -7,7 +7,7 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center w-full max-w-4xl px-6 py-20 text-center sm:px-12">
         {/* Logo */}
         <Image
-          src="/favicon.png" // replace with /logo.png if needed
+          src="/favicon.png"
           alt="NMG Tours Logo"
           width={120}
           height={120}
