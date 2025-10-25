@@ -1,0 +1,72 @@
+name: CI/CD - Build and Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+      - staging
+  pull_request:
+    branches:
+      - main
+      - master
+      - dev
+      - staging
+
+jobs:
+  build:
+    name: Build Next.js App
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Use Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Run tests (optional)
+      - name: Run tests
+        run: npm test
+        continue-on-error: true # optional - don't fail build if no tests yet
+
+      # Build project
+      - name: Build Next.js app
+        run: npm run build
+
+      # (Optional) Export static build for preview
+      - name: Export static files
+        if: success()
+        run: npm run export || echo "No export script defined"
+
+  # Optional: Deploy using Vercel CLI (if you want manual control from GitHub)
+  deploy:
+    name: Deploy to Vercel
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy with Vercel CLI
+        run: npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

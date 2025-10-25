@@ -48,7 +48,7 @@ export default function Home() {
             href="/donate"
             className="px-8 py-4 rounded-full bg-yellow-400 text-green-900 font-semibold hover:bg-yellow-300 transition text-center"
           >
-            DONATE
+            TELEGRAM
           </Link>
           <Link
             href="/about"
