@@ -25,10 +25,10 @@ export const metadata: Metadata = {
     description:
       "Experience Jamaica with NMG Tours — authentic, vibrant, and unforgettable.",
     url: "https://nmgtoursjam.com",
-    siteName: "NMG Tours Jamaica",
+    siteName: "NMG Tours",
     images: [
       {
-        url: "/NMGTOURS.png", // replace with your actual image path
+        url: "/nmgtoursjam/public/NMGTOURS.png",
         width: 1200,
         height: 630,
         alt: "NMG Tours",
