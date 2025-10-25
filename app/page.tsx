@@ -45,10 +45,10 @@ export default function Home() {
         {/* CTA Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
           <Link
-            href="/donate"
+            href="/start"
             className="px-8 py-4 rounded-full bg-yellow-400 text-green-900 font-semibold hover:bg-yellow-300 transition text-center"
           >
-            TELEGRAM
+            START HERE
           </Link>
           <Link
             href="/about"
