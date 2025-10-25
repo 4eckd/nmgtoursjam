@@ -17,11 +17,11 @@ const caveat = Caveat({
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "NMG Tours Jamaica | Authentic Island Experiences",
+  title: "NMG Tours | Authentic Island Experiences",
   description:
     "Discover authentic reggae, culture, and adventure with NMG Tours Jamaica. Book unforgettable experiences across the island — powered by local guides and true island vibes.",
   openGraph: {
-    title: "NMG Tours Jamaica",
+    title: "NMG Tours",
     description:
       "Experience Jamaica with NMG Tours — authentic, vibrant, and unforgettable.",
     url: "https://nmgtoursjam.com",
