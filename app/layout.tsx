@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     siteName: "NMG Tours",
     images: [
       {
-        url: "/nmgtoursjam/public/NMGTOURS.png",
-        width: 1200,
-        height: 630,
+        url: "./public/NMGTOURS.png",
+        width: 1920,
+        height: 1080,
         alt: "NMG Tours",
       },
     ],
@@ -58,7 +58,7 @@ export default function RootLayout({
           backgroundSize: "cover",
         }}
       >
-        <main className="flex flex-col items-center justify-center min-h-screen px-6">
+        <main className="flex flex-col items-center justify-center px-6">
           {children}
         </main>
       </body>

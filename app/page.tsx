@@ -17,11 +17,10 @@ export default function Home() {
 
         {/* Hero Text */}
         <h1 className="text-4xl sm:text-6xl font-bold leading-tight drop-shadow-md">
-          Experience Jamaica with <span className="text-yellow-300">NMG Tours</span>
+          NMG  <span className="text-yellow-300"> Tours</span>
         </h1>
         <p className="mt-6 max-w-2xl text-lg text-white/90 leading-relaxed">
-          Discover authentic reggae, culture, and adventure — from Kingston’s vibrant streets to the peaceful beaches of Negril. 
-          Let us take you on an unforgettable journey powered by local guides and real island vibes.
+          
         </p>
 
         {/* Call to Action Buttons */}
@@ -30,7 +29,7 @@ export default function Home() {
             href="/book"
             className="px-8 py-4 rounded-full bg-white text-green-700 font-semibold hover:bg-yellow-300 transition"
           >
-            Book a Tour
+            DONATE
           </Link>
           <Link
             href="/about"
@@ -42,7 +41,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-16 text-sm text-white/80">
-          © {new Date().getFullYear()} NMG Tours Jamaica · All Rights Reserved
+          © {new Date().getFullYear()} · All Rights Reserved
         </footer>
       </main>
     </div>
