@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Caveat } from "next/font/google";
-import "./globals.css";
+import Footer from "@/app/components/Footer";
+import NavBar from "@/app/components/Navigation";
 
 // Fonts
 const poppins = Poppins({
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "NMG Tours",
     images: [
       {
-        url: "/NMGTOURS.png", // ✅ Corrected public path
+        url: "/NMGTOURS.png",
         width: 1920,
         height: 1080,
         alt: "NMG Tours",
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/favicon.ico", // ✅ Corrected path
+    icon: "/favicon.ico",
   },
 };
 
@@ -51,16 +52,21 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white`}
-        // ✅ Moved gradient to html background instead of fixed body gradient
         style={{
           background:
-            "linear-gradient(135deg, #e11d48 0%, #facc15 50%, #16a34a 100%)",
+            "linear-gradient(135deg, #0a0a0a 0%, #171717 40%, #16a34a 100%)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
       >
-        {/* ✅ Do not wrap children in <main>, let each page define its layout */}
-        {children}
+        {/* ✅ Global Navigation */}
+        <NavBar />
+
+        {/* ✅ Page Content */}
+        <main className="pt-24">{children}</main>
+
+        {/* ✅ Optional Global Footer (add later if desired) */}
+        <Footer />
       </body>
     </html>
   );
