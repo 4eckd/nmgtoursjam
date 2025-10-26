@@ -25,8 +25,8 @@ export default function Home() {
           <Image
             src="/favicon.ico"
             alt="NMG Tours Logo"
-            width={120}
-            height={120}
+            width={320}
+            height={320}
             className="drop-shadow-lg mx-auto"
             priority
           />
@@ -34,12 +34,12 @@ export default function Home() {
 
         {/* Hero Title */}
         <h1 className="text-4xl sm:text-6xl font-bold leading-tight drop-shadow-md tracking-tight">
-          NMG <span className="text-emerald-400">Tours</span>
+          NMG <span className="text-emerald-400">Tour Jams</span>
         </h1>
 
         {/* Subtext */}
         <p className="mt-4 text-lg text-white/90 max-w-md leading-relaxed">
-          Discover your next adventure with <span className="text-emerald-400">NMG Tours</span>.
+          Discover your next water adventure with <span className="text-emerald-400">NMG Tours</span>.
         </p>
 
         {/* CTA Buttons */}
@@ -60,7 +60,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-16 text-sm text-white/80">
-          © {new Date().getFullYear()} NMG Tours · All Rights Reserved
+          © {new Date().getFullYear()} NMG Tour Jams · All Rights Reserved
         </footer>
       </div>
     </div>

@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen w-screen overflow-hidden text-white font-poppins">
+      
       {/* Background Image */}
       <Image
         src="/NMGTOURS.png"
@@ -25,8 +27,8 @@ export default function Home() {
           <Image
             src="/favicon.ico"
             alt="NMG Tours Logo"
-            width={120}
-            height={120}
+            width={320}
+            height={320}
             className="drop-shadow-lg mx-auto"
             priority
           />
@@ -59,10 +61,12 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-sm text-white/80">
+        <Footer className="mt-16 text-sm text-white/80">
           © {new Date().getFullYear()} NMG Tours · All Rights Reserved
-        </footer>
+        </Footer>
       </div>
     </div>
   );
 }
+
+// app/page.tsx //

@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react";
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
@@ -56,7 +55,7 @@ export default function NavBar() {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-black/90 backdrop-blur-md border-t border-white/10 px-6 py-4 space-y-4 text-center text-white">
+        <div className="md:hidden bg-black/90 backdrop-blur-md border-t border-white/10 px-6 py-6 space-y-4 text-center text-white">
           <Link href="/" onClick={toggleMenu} className="block hover:text-emerald-400 transition">Home</Link>
           <Link href="/about" onClick={toggleMenu} className="block hover:text-emerald-400 transition">About</Link>
           <Link href="/tours" onClick={toggleMenu} className="block hover:text-emerald-400 transition">Rafting Tours</Link>
