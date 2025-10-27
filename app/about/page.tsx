@@ -1,5 +1,3 @@
-import Footer from "../components/Footer";
-
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-zinc-100">
@@ -10,7 +8,6 @@ export default function AboutPage() {
         </p>
         {/* Add your actual About Us content here */}
       </main>
-      <Footer />
     </div>
   );
 }

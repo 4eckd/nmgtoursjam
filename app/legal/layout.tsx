@@ -41,19 +41,7 @@ export default function LegalLayout({
       
       {/* Page Content */}
       {children}
-      
-      {/* Legal Footer */}
-      <div className="bg-gray-100 mt-12">
-        <div className="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-gray-600">
-          <p>© 2024 NMGToursJam. All rights reserved.</p>
-          <p className="mt-2">
-            Questions? Contact us at{' '}
-            <a href="mailto:legal@nmgtoursjam.com" className="text-blue-600 hover:underline">
-              legal@nmgtoursjam.com
-            </a>
-          </p>
-        </div>
       </div>
-    </div>
-  )
-}
+      )
+    }
+    

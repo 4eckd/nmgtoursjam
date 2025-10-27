@@ -4,10 +4,10 @@ export default function Footer({ className = "", children }: { className?: strin
   return (
     <footer className={`w-full border-t border-zinc-800 bg-black text-zinc-400 py-8 px-6 text-sm flex flex-col sm:flex-row justify-between items-center ${className}`}>
       <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
-        <Link href="/app/legal/terms" className="hover:text-white transition">Terms</Link>
-        <Link href="/app/legal/terms/privacy" className="hover:text-white transition">Privacy</Link>
-        <Link href="/app/legal/terms/refunds" className="hover:text-white transition">Refunds</Link>
-        <Link href="/app/legal/terms/safety" className="hover:text-white transition">Safety</Link>
+        <Link href="/legal/terms" className="hover:text-white transition">Terms</Link>
+        <Link href="/legal/privacy" className="hover:text-white transition">Privacy</Link>
+        <Link href="/legal/refunds" className="hover:text-white transition">Refunds</Link>
+        <Link href="/legal/safety" className="hover:text-white transition">Safety</Link>
         <Link href="/contact" className="hover:text-white transition">Contact</Link>
         <Link href="/about" className="hover:text-white transition">About</Link>
         <Link href="/signup" className="hover:text-white transition">Sign Up</Link>

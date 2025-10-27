@@ -1,5 +1,3 @@
-import Footer from "../components/Footer";
-
 export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-zinc-100">
@@ -17,7 +15,6 @@ export default function ContactPage() {
           </button>
         </form>
       </main>
-      <Footer />
     </div>
   );
 }

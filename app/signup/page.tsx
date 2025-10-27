@@ -1,5 +1,3 @@
-import Footer from "@/app/components/Footer";
-
 export default function SignupPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-zinc-100">
@@ -10,7 +8,6 @@ export default function SignupPage() {
         </p>
         {/* Add your actual Signup content here */}
       </main>
-      <Footer />
     </div>
   );
 }

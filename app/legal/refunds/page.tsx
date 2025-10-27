@@ -1,5 +1,3 @@
-import Footer from "../../components/Footer";
-
 export default function RefundsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-zinc-100">
@@ -62,8 +60,6 @@ export default function RefundsPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

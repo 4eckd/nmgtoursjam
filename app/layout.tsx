@@ -54,7 +54,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white`}
         style={{
           background:
-            "linear-gradient(135deg, #0a0a0a 0%, #171717 40%, #16a34a 100%)",
+            "linear-gradient(135deg, #4747475e 15%, #853e3e83 50%, #55d2836c 90%)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
