@@ -2,104 +2,143 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[9999] w-full bg-emerald-500 border-b-4 border-red-500 shadow-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Logo/Brand - Always visible */}
-        <Link href="/" className="flex items-center gap-2 z-10 relative">
-          <span className="text-2xl md:text-3xl font-bold font-caveat text-black drop-shadow-lg">
-            NMG Tours DEBUG
+    <nav
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9999,
+        width: '100%',
+        backgroundColor: '#000',
+        borderBottom: '2px solid rgba(16, 185, 129, 0.3)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)'
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 1.5rem'
+        }}
+      >
+        {/* Logo */}
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <span
+            style={{
+              fontSize: '1.875rem',
+              fontWeight: 'bold',
+              color: '#10b981',
+              fontFamily: 'var(--font-caveat)'
+            }}
+          >
+            NMG Tours
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6 text-black font-medium relative">
-          <Link href="/" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
-            Home
-          </Link>
-          <Link href="/about" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
-            About
-          </Link>
-          <Link href="/tours" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
-            Rafting Tours
-          </Link>
-          <Link href="/gallery" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
-            Gallery
-          </Link>
-          <Link href="/contact" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
-            Contact
-          </Link>
+        {/* Desktop Menu */}
+        <div
+          style={{
+            display: 'none',
+            gap: '2rem',
+            alignItems: 'center'
+          }}
+          className="desktop-nav"
+        >
+          <Link href="/" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Home</Link>
+          <Link href="/about" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>About</Link>
+          <Link href="/tours" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Tours</Link>
+          <Link href="/gallery" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Gallery</Link>
+          <Link href="/contact" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Contact</Link>
           <Link
             href="/signup"
-            className="ml-2 px-6 py-2 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition-all shadow-md hover:shadow-lg"
+            style={{
+              backgroundColor: '#10b981',
+              color: '#000',
+              padding: '0.5rem 1.5rem',
+              borderRadius: '9999px',
+              textDecoration: 'none',
+              fontWeight: 600
+            }}
           >
             Book Now
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Button */}
         <button
-          onClick={toggleMenu}
-          className="md:hidden text-white hover:text-emerald-400 transition-colors z-10 p-2"
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#fff',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            padding: '0.5rem'
+          }}
+          className="mobile-menu-btn"
           aria-label="Toggle menu"
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          {menuOpen ? '✕' : '☰'}
         </button>
       </div>
 
       {/* Mobile Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-black border-t border-emerald-400/30 px-6 py-6 space-y-4 text-center text-white shadow-xl">
-          <Link
-            href="/"
-            onClick={toggleMenu}
-            className="block py-2 hover:text-emerald-400 transition-colors text-lg"
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            onClick={toggleMenu}
-            className="block py-2 hover:text-emerald-400 transition-colors text-lg"
-          >
-            About
-          </Link>
-          <Link
-            href="/tours"
-            onClick={toggleMenu}
-            className="block py-2 hover:text-emerald-400 transition-colors text-lg"
-          >
-            Rafting Tours
-          </Link>
-          <Link
-            href="/gallery"
-            onClick={toggleMenu}
-            className="block py-2 hover:text-emerald-400 transition-colors text-lg"
-          >
-            Gallery
-          </Link>
-          <Link
-            href="/contact"
-            onClick={toggleMenu}
-            className="block py-2 hover:text-emerald-400 transition-colors text-lg"
-          >
-            Contact
-          </Link>
+        <div
+          style={{
+            backgroundColor: '#000',
+            borderTop: '1px solid rgba(16, 185, 129, 0.3)',
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            textAlign: 'center'
+          }}
+          className="mobile-menu"
+        >
+          <Link href="/" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Home</Link>
+          <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>About</Link>
+          <Link href="/tours" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Tours</Link>
+          <Link href="/gallery" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Gallery</Link>
+          <Link href="/contact" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Contact</Link>
           <Link
             href="/signup"
-            onClick={toggleMenu}
-            className="block mx-auto max-w-xs px-6 py-3 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition-all shadow-md text-lg mt-4"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              backgroundColor: '#10b981',
+              color: '#000',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '9999px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              marginTop: '0.5rem',
+              display: 'inline-block'
+            }}
           >
             Book Now
           </Link>
         </div>
       )}
+
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .desktop-nav {
+            display: flex !important;
+          }
+          .mobile-menu-btn {
+            display: none !important;
+          }
+        }
+      `}</style>
     </nav>
   );
 }

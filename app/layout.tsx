@@ -59,22 +59,6 @@ export default function RootLayout({
           backgroundSize: "cover",
         }}
       >
-        {/* TEST ELEMENT - SHOULD BE BRIGHT RED */}
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '100px',
-            backgroundColor: 'red',
-            zIndex: 99999,
-            border: '10px solid yellow'
-          }}
-        >
-          <h1 style={{ color: 'white', fontSize: '48px', textAlign: 'center' }}>TEST NAVIGATION BAR</h1>
-        </div>
-
         {/* ✅ Global Navigation */}
         <NavBar />
 

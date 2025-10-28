@@ -23,7 +23,10 @@
       "Bash(npx prisma migrate dev)",
       "Bash(npx prisma migrate deploy)",
       "Bash(npx prisma migrate reset)",
-      "Bash(npx prisma studio)"
+      "Bash(npx prisma studio)",
+      "Bash(git rm:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)"
     ],
     "deny": [],
     "ask": []
