@@ -9,7 +9,7 @@ export default function Navigation() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="w-full bg-black/70 backdrop-blur-md border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-black/70 backdrop-blur-md border-b border-white/10">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8 text-white font-medium">
