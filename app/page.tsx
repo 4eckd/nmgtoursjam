@@ -18,7 +18,7 @@ export default function Home() {
       </div>
 
       {/* Gradient Overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/30 via-black/70 to-emerald-800/95 -z-10" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/70 to-emerald-800/95 -z-10" />
 
       {/* Hero Content - Accounts for navigation height */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">

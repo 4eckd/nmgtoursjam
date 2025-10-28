@@ -9,30 +9,30 @@ export default function Navigation() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] w-full bg-black/80 backdrop-blur-md border-b border-emerald-400/20 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-[9999] w-full bg-black border-b border-emerald-400/30 shadow-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo/Brand - Always visible */}
-        <Link href="/" className="flex items-center gap-2 z-10">
-          <span className="text-2xl font-bold font-caveat text-emerald-400">
+        <Link href="/" className="flex items-center gap-2 z-10 relative">
+          <span className="text-2xl md:text-3xl font-bold font-caveat text-emerald-400 drop-shadow-lg">
             NMG Tours
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6 text-white font-medium">
-          <Link href="/" className="hover:text-emerald-400 transition-colors">
+        <div className="hidden md:flex items-center gap-6 text-white font-medium relative">
+          <Link href="/" className="hover:text-emerald-400 transition-colors text-base font-semibold">
             Home
           </Link>
-          <Link href="/about" className="hover:text-emerald-400 transition-colors">
+          <Link href="/about" className="hover:text-emerald-400 transition-colors text-base font-semibold">
             About
           </Link>
-          <Link href="/tours" className="hover:text-emerald-400 transition-colors">
+          <Link href="/tours" className="hover:text-emerald-400 transition-colors text-base font-semibold">
             Rafting Tours
           </Link>
-          <Link href="/gallery" className="hover:text-emerald-400 transition-colors">
+          <Link href="/gallery" className="hover:text-emerald-400 transition-colors text-base font-semibold">
             Gallery
           </Link>
-          <Link href="/contact" className="hover:text-emerald-400 transition-colors">
+          <Link href="/contact" className="hover:text-emerald-400 transition-colors text-base font-semibold">
             Contact
           </Link>
           <Link
@@ -55,7 +55,7 @@ export default function Navigation() {
 
       {/* Mobile Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-emerald-400/20 px-6 py-6 space-y-4 text-center text-white shadow-xl">
+        <div className="md:hidden bg-black border-t border-emerald-400/30 px-6 py-6 space-y-4 text-center text-white shadow-xl">
           <Link
             href="/"
             onClick={toggleMenu}
