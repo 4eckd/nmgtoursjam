@@ -25,6 +25,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - None
 
+## [0.2.1] - 2025-10-28
+
+### Added
+- **Navigation & Routing (TRACK 1 Progress)**
+  - Global navigation bar with NMG Tours branding
+  - Mobile-responsive hamburger menu
+  - `/tours` page with rafting tour listings (Martha Brae, Rio Grande, White River)
+  - `/gallery` page with photo grid layout and social media integration
+  - Complete footer navigation with main pages and legal links
+
+### Changed
+- Rewrote Navigation component using inline styles for better reliability (replaced Tailwind classes that weren't rendering)
+- Updated footer to include Tours, Gallery, and Cookies links
+- Improved navigation z-index and positioning for guaranteed visibility
+
+### Removed
+- Removed conflicting `app/legal/layout.tsx` that was overriding global navigation
+- Removed duplicate `/home` directory causing build conflicts
+
+### Fixed
+- **CRITICAL**: Fixed navigation invisibility issue - navigation now renders correctly on all pages
+- Fixed legal page routing - all `/legal/*` routes now accessible with global navigation
+- Fixed landing page layout to work properly with fixed navigation bar
+- Fixed background image positioning for better display
+- Fixed footer link organization with visual separator between sections
+
+### Known Issues
+- Legal pages (terms, privacy, cookies, refunds, safety) still use gray/white styling instead of emerald/black theme
+- Background image `NMGTOURS.png` may need physical file replacement if showing outdated colors
+- Legal page theming deferred to future work
+
 ## [0.2.0] - 2025-01-28
 
 ### Added
