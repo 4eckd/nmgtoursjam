@@ -9,30 +9,30 @@ export default function Navigation() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[9999] w-full bg-black border-b border-emerald-400/30 shadow-xl">
+    <nav className="fixed top-0 left-0 right-0 z-[9999] w-full bg-emerald-500 border-b-4 border-red-500 shadow-2xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo/Brand - Always visible */}
         <Link href="/" className="flex items-center gap-2 z-10 relative">
-          <span className="text-2xl md:text-3xl font-bold font-caveat text-emerald-400 drop-shadow-lg">
-            NMG Tours
+          <span className="text-2xl md:text-3xl font-bold font-caveat text-black drop-shadow-lg">
+            NMG Tours DEBUG
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6 text-white font-medium relative">
-          <Link href="/" className="hover:text-emerald-400 transition-colors text-base font-semibold">
+        <div className="hidden md:flex items-center gap-6 text-black font-medium relative">
+          <Link href="/" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
             Home
           </Link>
-          <Link href="/about" className="hover:text-emerald-400 transition-colors text-base font-semibold">
+          <Link href="/about" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
             About
           </Link>
-          <Link href="/tours" className="hover:text-emerald-400 transition-colors text-base font-semibold">
+          <Link href="/tours" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
             Rafting Tours
           </Link>
-          <Link href="/gallery" className="hover:text-emerald-400 transition-colors text-base font-semibold">
+          <Link href="/gallery" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
             Gallery
           </Link>
-          <Link href="/contact" className="hover:text-emerald-400 transition-colors text-base font-semibold">
+          <Link href="/contact" className="hover:text-red-600 transition-colors text-base font-bold bg-yellow-300 px-4 py-2">
             Contact
           </Link>
           <Link
