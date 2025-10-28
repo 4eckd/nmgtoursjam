@@ -26,7 +26,8 @@
       "Bash(npx prisma studio)",
       "Bash(git rm:*)",
       "Bash(gh pr create:*)",
-      "Bash(gh pr view:*)"
+      "Bash(gh pr view:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
