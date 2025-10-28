@@ -7,31 +7,31 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Terms & Conditions</h1>
+        <h1 className="text-4xl font-bold text-white mb-8">Terms & Conditions</h1>
         
-        <div className="bg-white shadow rounded-lg p-8 space-y-6">
-          <div className="text-sm text-gray-600 mb-8">
+        <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-8 space-y-6">
+          <div className="text-sm text-zinc-400 mb-8">
             <p>Effective Date: October 26, 2024</p>
             <p>Last Updated: October 26, 2024</p>
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">1. Agreement to Terms</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">1. Agreement to Terms</h2>
+            <p className="text-zinc-300">
               By accessing or using NMGToursJam ("we," "our," or "us"), including our website, mobile applications, and services (collectively, the "Services"), you agree to be bound by these Terms & Conditions ("Terms"). If you do not agree to these Terms, please do not use our Services.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">2. Services Description</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">2. Services Description</h2>
+            <p className="text-zinc-300">
               NMGToursJam provides an online platform that connects tourists with local tour guides and hosts for tours and cultural experiences ("Jams") in New Mexico. We facilitate bookings but are not the direct provider of tours or events unless specifically stated.
             </p>
             <div className="ml-4 space-y-2">
               <h3 className="font-semibold">Our Services include:</h3>
-              <ul className="list-disc ml-6 space-y-1 text-gray-700">
+              <ul className="list-disc ml-6 space-y-1 text-zinc-300">
                 <li>Tour and event discovery platform</li>
                 <li>Booking and reservation system</li>
                 <li>Payment processing</li>
@@ -42,8 +42,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">3. User Accounts</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">3. User Accounts</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>3.1 Account Creation:</strong> To book tours or host experiences, you must create an account. You must be at least 18 years old to create an account.</p>
               <p><strong>3.2 Account Security:</strong> You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
               <p><strong>3.3 Accurate Information:</strong> You agree to provide accurate, current, and complete information during registration and to update such information to keep it accurate.</p>
@@ -51,8 +51,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">4. Booking Terms</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">4. Booking Terms</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>4.1 Booking Process:</strong> When you book a tour or jam through our platform, you enter into a contract directly with the tour guide or host. NMGToursJam acts solely as an intermediary.</p>
               <p><strong>4.2 Pricing:</strong> All prices are displayed in USD and include applicable taxes unless otherwise stated. Prices are subject to change until booking is confirmed.</p>
               <p><strong>4.3 Payment:</strong> Payment is processed securely through our third-party payment provider. Full payment is required at the time of booking unless otherwise specified.</p>
@@ -61,8 +61,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">5. Cancellation and Refund Policy</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">5. Cancellation and Refund Policy</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>5.1 Guest Cancellations:</strong></p>
               <ul className="list-disc ml-10 space-y-1">
                 <li>48+ hours before tour: Full refund minus processing fees</li>
@@ -76,8 +76,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">6. Guest Responsibilities</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">6. Guest Responsibilities</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>As a guest, you agree to:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Arrive on time at the designated meeting location</li>
@@ -91,8 +91,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">7. Host Terms</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">7. Host Terms</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>If you list tours or jams on our platform, you additionally agree to:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Provide accurate descriptions and images of your offerings</li>
@@ -106,8 +106,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">8. Prohibited Activities</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">8. Prohibited Activities</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>You may not:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Use the Services for any illegal purpose or in violation of any laws</li>
@@ -122,8 +122,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">9. Intellectual Property</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">9. Intellectual Property</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>9.1 Our Content:</strong> All content on NMGToursJam, including text, graphics, logos, images, and software, is our property or that of our licensors and is protected by intellectual property laws.</p>
               <p><strong>9.2 User Content:</strong> By posting content on our platform, you grant us a non-exclusive, worldwide, royalty-free license to use, display, and distribute such content in connection with our Services.</p>
               <p><strong>9.3 Feedback:</strong> Any feedback or suggestions you provide may be used by us without any obligation to compensate you.</p>
@@ -131,15 +131,15 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">10. Privacy</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">10. Privacy</h2>
+            <p className="text-zinc-300">
               Your use of our Services is also governed by our Privacy Policy, which describes how we collect, use, and protect your personal information. By using our Services, you consent to our data practices as described in the Privacy Policy.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">11. Disclaimers and Limitations of Liability</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">11. Disclaimers and Limitations of Liability</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>11.1 Platform Role:</strong> NMGToursJam is a platform that facilitates connections between guests and tour providers. We are not responsible for the actions, omissions, or negligence of any tour guides, hosts, or guests.</p>
               <p><strong>11.2 No Warranties:</strong> The Services are provided "as is" without warranties of any kind, either express or implied.</p>
               <p><strong>11.3 Assumption of Risk:</strong> You acknowledge that travel and tourism activities involve inherent risks. You voluntarily assume all risks associated with participating in tours and jams.</p>
@@ -149,15 +149,15 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">12. Indemnification</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">12. Indemnification</h2>
+            <p className="text-zinc-300">
               You agree to indemnify, defend, and hold harmless NMGToursJam, its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorney's fees) arising from your use of the Services, violation of these Terms, or violation of any rights of another.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">13. Dispute Resolution</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">13. Dispute Resolution</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>13.1 Informal Resolution:</strong> We encourage you to contact us first to resolve any disputes informally.</p>
               <p><strong>13.2 Arbitration:</strong> Any disputes that cannot be resolved informally shall be resolved through binding arbitration in accordance with the rules of the American Arbitration Association.</p>
               <p><strong>13.3 Exceptions:</strong> You may pursue claims in small claims court if they qualify. Either party may seek injunctive relief in court for intellectual property violations.</p>
@@ -166,8 +166,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">14. General Terms</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">14. General Terms</h2>
+            <div className="space-y-3 text-zinc-300">
               <p><strong>14.1 Governing Law:</strong> These Terms are governed by the laws of New Mexico, USA, without regard to conflict of law principles.</p>
               <p><strong>14.2 Entire Agreement:</strong> These Terms constitute the entire agreement between you and NMGToursJam regarding the Services.</p>
               <p><strong>14.3 Modifications:</strong> We may modify these Terms at any time. Continued use of the Services after modifications constitutes acceptance of the updated Terms.</p>
@@ -177,8 +177,8 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">15. Contact Information</h2>
-            <div className="space-y-2 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">15. Contact Information</h2>
+            <div className="space-y-2 text-zinc-300">
               <p>For questions about these Terms, please contact us at:</p>
               <div className="ml-4">
                 <p><strong>NMGToursJam</strong></p>
@@ -189,8 +189,8 @@ export default function TermsPage() {
             </div>
           </section>
 
-          <div className="mt-12 p-4 bg-gray-100 rounded-lg">
-            <p className="text-sm text-gray-600 text-center">
+          <div className="mt-12 p-4 bg-emerald-900/30 border border-emerald-500/20 rounded-lg">
+            <p className="text-sm text-zinc-400 text-center">
               By using NMGToursJam, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions.
             </p>
           </div>

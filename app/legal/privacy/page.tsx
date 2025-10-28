@@ -7,29 +7,29 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
+        <h1 className="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
         
-        <div className="bg-white shadow rounded-lg p-8 space-y-6">
-          <div className="text-sm text-gray-600 mb-8">
+        <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-8 space-y-6">
+          <div className="text-sm text-zinc-400 mb-8">
             <p>Effective Date: October 26, 2024</p>
             <p>Last Updated: October 26, 2024</p>
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">1. Introduction</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">1. Introduction</h2>
+            <p className="text-zinc-300">
               NMGToursJam we, our, or us respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">2. Information We Collect</h2>
+            <h2 className="text-2xl font-semibold text-white">2. Information We Collect</h2>
             
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-gray-800">2.1 Information You Provide</h3>
-              <ul className="list-disc ml-6 space-y-1 text-gray-700">
+              <h3 className="text-lg font-semibold text-zinc-200">2.1 Information You Provide</h3>
+              <ul className="list-disc ml-6 space-y-1 text-zinc-300">
                 <li><strong>Account Information:</strong> Name, email address, phone number, password</li>
                 <li><strong>Profile Information:</strong> Photo, bio, preferences, interests</li>
                 <li><strong>Booking Information:</strong> Tour selections, dates, guest counts, special requirements</li>
@@ -40,8 +40,8 @@ export default function PrivacyPage() {
             </div>
 
             <div className="space-y-3 mt-4">
-              <h3 className="text-lg font-semibold text-gray-800">2.2 Information Collected Automatically</h3>
-              <ul className="list-disc ml-6 space-y-1 text-gray-700">
+              <h3 className="text-lg font-semibold text-zinc-200">2.2 Information Collected Automatically</h3>
+              <ul className="list-disc ml-6 space-y-1 text-zinc-300">
                 <li><strong>Device Information:</strong> IP address, browser type, operating system</li>
                 <li><strong>Usage Data:</strong> Pages visited, features used, search queries, booking history</li>
                 <li><strong>Location Data:</strong> Approximate location based on IP address, precise location (with permission)</li>
@@ -51,8 +51,8 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">3. How We Use Your Information</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">3. How We Use Your Information</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>We use your information to:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Process bookings and payments</li>
@@ -70,8 +70,8 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">4. Information Sharing and Disclosure</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">4. Information Sharing and Disclosure</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>We share your information with:</p>
               
               <p><strong>4.1 Tour Guides and Hosts:</strong> When you book, we share necessary information (name, contact details, special requirements) with the provider.</p>
@@ -93,8 +93,8 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">5. Data Security</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">5. Data Security</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>We implement appropriate security measures including:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Encryption of sensitive data in transit and at rest</li>
@@ -108,8 +108,8 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">6. Your Rights and Choices</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">6. Your Rights and Choices</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>You have the right to:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li><strong>Access:</strong> Request a copy of your personal information</li>
@@ -124,8 +124,8 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">7. Cookies and Tracking Technologies</h2>
-            <div className="space-y-3 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">7. Cookies and Tracking Technologies</h2>
+            <div className="space-y-3 text-zinc-300">
               <p>We use cookies and similar technologies to:</p>
               <ul className="list-disc ml-6 space-y-1">
                 <li>Keep you logged in</li>
@@ -139,50 +139,50 @@ export default function PrivacyPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">8. Third-Party Links</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">8. Third-Party Links</h2>
+            <p className="text-zinc-300">
               Our Services may contain links to third-party websites. We are not responsible for the privacy practices of these external sites. We encourage you to review their privacy policies.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">9. Children Privacy</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">9. Children Privacy</h2>
+            <p className="text-zinc-300">
               Our Services are not intended for children under 18. We do not knowingly collect personal information from children. If we learn we have collected information from a child under 18, we will delete it promptly.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">10. Data Retention</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">10. Data Retention</h2>
+            <p className="text-zinc-300">
               We retain your information as long as necessary to provide our services and comply with legal obligations. When you delete your account, we delete or anonymize your personal information, except where retention is required by law.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">11. International Data Transfers</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">11. International Data Transfers</h2>
+            <p className="text-zinc-300">
               Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place for international transfers in compliance with applicable laws.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">12. California Privacy Rights</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">12. California Privacy Rights</h2>
+            <p className="text-zinc-300">
               California residents have additional rights under the California Consumer Privacy Act (CCPA), including the right to know what personal information we collect, the right to delete personal information, and the right to opt-out of the sale of personal information. We do not sell personal information.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">13. Changes to This Policy</h2>
-            <p className="text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">13. Changes to This Policy</h2>
+            <p className="text-zinc-300">
               We may update this Privacy Policy from time to time. We will notify you of material changes by posting the new policy on this page and updating the Last Updated date. Your continued use of our Services after changes constitutes acceptance of the updated policy.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">14. Contact Us</h2>
-            <div className="space-y-2 text-gray-700">
+            <h2 className="text-2xl font-semibold text-white">14. Contact Us</h2>
+            <div className="space-y-2 text-zinc-300">
               <p>For privacy-related questions or concerns, contact us at:</p>
               <div className="ml-4">
                 <p><strong>NMGToursJam Privacy Team</strong></p>
@@ -194,8 +194,8 @@ export default function PrivacyPage() {
             </div>
           </section>
 
-          <div className="mt-12 p-4 bg-gray-100 rounded-lg">
-            <p className="text-sm text-gray-600 text-center">
+          <div className="mt-12 p-4 bg-emerald-900/30 border border-emerald-500/20 rounded-lg">
+            <p className="text-sm text-zinc-400 text-center">
               This Privacy Policy is part of our Terms & Conditions. By using NMGToursJam, you consent to the data practices described in this policy.
             </p>
           </div>

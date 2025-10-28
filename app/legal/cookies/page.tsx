@@ -8,14 +8,14 @@ export const metadata: Metadata = {
 export default function CookiesPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">Cookie Policy</h1>
+      <h1 className="text-4xl font-bold text-white mb-8">Cookie Policy</h1>
       
-      <div className="bg-white shadow rounded-lg p-8 space-y-6">
-        <p className="text-sm text-gray-600 mb-6">Last Updated: October 26, 2024</p>
+      <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-8 space-y-6">
+        <p className="text-sm text-zinc-400 mb-6">Last Updated: October 26, 2024</p>
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">What Are Cookies?</h2>
-          <p className="text-gray-700">
+          <p className="text-zinc-300">
             Cookies are small text files stored on your device when you visit our website. 
             They help us provide a better user experience by remembering your preferences 
             and understanding how you use our services.
@@ -28,8 +28,8 @@ export default function CookiesPage() {
           <div className="space-y-3">
             <div>
               <h3 className="font-semibold text-lg">Essential Cookies</h3>
-              <p className="text-gray-700">Required for the website to function properly.</p>
-              <ul className="list-disc ml-6 mt-2 text-gray-600">
+              <p className="text-zinc-300">Required for the website to function properly.</p>
+              <ul className="list-disc ml-6 mt-2 text-zinc-400">
                 <li>Session management</li>
                 <li>Security tokens</li>
                 <li>Load balancing</li>
@@ -38,8 +38,8 @@ export default function CookiesPage() {
 
             <div>
               <h3 className="font-semibold text-lg">Functional Cookies</h3>
-              <p className="text-gray-700">Enhance your experience by remembering your choices.</p>
-              <ul className="list-disc ml-6 mt-2 text-gray-600">
+              <p className="text-zinc-300">Enhance your experience by remembering your choices.</p>
+              <ul className="list-disc ml-6 mt-2 text-zinc-400">
                 <li>Language preferences</li>
                 <li>Login information</li>
                 <li>Accessibility settings</li>
@@ -48,8 +48,8 @@ export default function CookiesPage() {
 
             <div>
               <h3 className="font-semibold text-lg">Analytics Cookies</h3>
-              <p className="text-gray-700">Help us understand how visitors use our website.</p>
-              <ul className="list-disc ml-6 mt-2 text-gray-600">
+              <p className="text-zinc-300">Help us understand how visitors use our website.</p>
+              <ul className="list-disc ml-6 mt-2 text-zinc-400">
                 <li>Google Analytics</li>
                 <li>Page view tracking</li>
                 <li>User journey analysis</li>
@@ -58,8 +58,8 @@ export default function CookiesPage() {
 
             <div>
               <h3 className="font-semibold text-lg">Marketing Cookies</h3>
-              <p className="text-gray-700">Used to show relevant advertisements.</p>
-              <ul className="list-disc ml-6 mt-2 text-gray-600">
+              <p className="text-zinc-300">Used to show relevant advertisements.</p>
+              <ul className="list-disc ml-6 mt-2 text-zinc-400">
                 <li>Retargeting pixels</li>
                 <li>Social media cookies</li>
                 <li>Ad performance tracking</li>
@@ -70,13 +70,13 @@ export default function CookiesPage() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Managing Cookies</h2>
-          <p className="text-gray-700">
+          <p className="text-zinc-300">
             You can control cookies through your browser settings. Note that disabling 
             certain cookies may impact the functionality of our website.
           </p>
-          <div className="bg-gray-50 p-4 rounded">
+          <div className="bg-transparent p-4 rounded">
             <p className="font-semibold mb-2">Browser Cookie Settings:</p>
-            <ul className="space-y-1 text-sm text-gray-600">
+            <ul className="space-y-1 text-sm text-zinc-400">
               <li>• Chrome: Settings → Privacy and security → Cookies</li>
               <li>• Firefox: Settings → Privacy & Security → Cookies</li>
               <li>• Safari: Preferences → Privacy → Cookies</li>
@@ -87,7 +87,7 @@ export default function CookiesPage() {
 
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Contact Us</h2>
-          <p className="text-gray-700">
+          <p className="text-zinc-300">
             If you have questions about our use of cookies, please contact us at{' '}
             <a href="mailto:privacy@nmgtoursjam.com" className="text-blue-600 hover:underline">
               privacy@nmgtoursjam.com
