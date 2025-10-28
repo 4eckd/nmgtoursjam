@@ -5,20 +5,22 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden text-white font-poppins">
-      {/* Background Image */}
-      <Image
-        src="/NMGTOURS.png"
-        alt="NMG Tours Background"
-        fill
-        priority
-        className="object-cover object-center -z-10"
-      />
+    <div className="relative w-full overflow-hidden text-white font-poppins">
+      {/* Background Image - Fixed position for full viewport coverage */}
+      <div className="fixed inset-0 -z-20">
+        <Image
+          src="/NMGTOURS.png"
+          alt="NMG Tours Background"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+      </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/70 to-emerald-800/95 -z-10" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/70 to-emerald-800/95 -z-10" />
 
-      {/* Hero Content */}
+      {/* Hero Content - Accounts for navigation height */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-caveat">
           Authentic Island Experiences
