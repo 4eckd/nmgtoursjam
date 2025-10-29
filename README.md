@@ -1,36 +1,154 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="./public/favicon.png" alt="NMG Tours JAM Logo" width="120" height="120" />
+</p>
 
-## Getting Started
+<h1 align="center">🌴 NMG Tours JAM 🌊</h1>
 
-First, run the development server:
+<p align="center">
+  <strong>Explore. Experience. Remember.</strong><br/>
+  <a href="https://nmgtoursjam.com" target="_blank">nmgtoursjam.com</a>
+</p>
+
+<p align="center">
+  <a href="https://nmgtoursjam.com/"><img src="https://img.shields.io/github/deployments/4eckd/nmgtoursjam/Production?label=Deployment&logo=vercel&logoColor=white" alt="Deployment Status"></a>
+  <a href="https://github.com/4eckd/nmgtoursjam/commits/main"><img src="https://img.shields.io/github/last-commit/4eckd/nmgtoursjam?logo=git&label=Last%20Commit" alt="Last Commit"></a>
+  <a href="https://github.com/4eckd/nmgtoursjam/stargazers"><img src="https://img.shields.io/github/stars/4eckd/nmgtoursjam?style=social" alt="Stars"></a>
+  <a href="https://hits.sh/github.com/4eckd/nmgtoursjam/"><img src="https://hits.sh/github.com/4eckd/nmgtoursjam.svg?label=Views&color=blue" alt="Hits"></a>
+</p>
+
+<p align="center">
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Built%20with-Next.js-000?logo=nextdotjs" alt="Built with Next.js"></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Styled%20with-TailwindCSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Styled with TailwindCSS"></a>
+  <a href="https://vercel.com/"><img src="https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel" alt="Deployed with Vercel"></a>
+  <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/Package%20Manager-pnpm-F69220?logo=pnpm" alt="Maintained with pnpm"></a>
+  <a href="https://github.com/4eckd/nmgtoursjam/blob/main/LICENSE"><img src="https://img.shields.io/github/license/4eckd/nmgtoursjam" alt="License"></a>
+</p>
+
+---
+
+## 🌍 About  
+
+Welcome to **NMG Tours JAM**, your gateway to unforgettable Jamaican adventures.  
+This repository powers [nmgtoursjam.com](https://nmgtoursjam.com/) — a modern, high-performance web app that connects travelers with authentic local experiences.
+
+---
+
+## 🚀 Purpose  
+
+- Present the full range of NMG’s curated tours and travel packages.  
+- Provide a smooth, mobile-first booking experience.  
+- Keep performance optimized with fast-loading images and lean code.  
+- Maintain a content-flexible structure so admins can easily update tours or pricing.  
+
+---
+
+## 📁 Project Structure  
+
+```plaintext
+nmgtoursjam/
+│
+├── src/              # Next.js pages, components, and utilities
+├── public/           # Static assets (favicon, banner, images)
+├── content/          # Tour and location metadata
+├── styles/           # TailwindCSS configuration
+├── package.json
+└── CLAUDE.md         # AI assistant and dev context guide
+````
+
+---
+
+## 🧑‍💻 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clone the repository
+git clone https://github.com/4eckd/nmgtoursjam.git
+
+# Navigate into the project
+cd nmgtoursjam
+
+# Install dependencies
+pnpm install
+
+# Run local development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then visit [http://localhost:3000](http://localhost:3000) to preview.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Technology Stack
 
-## Learn More
+| Category            | Tools / Frameworks                                                       |
+| :------------------ | :----------------------------------------------------------------------- |
+| **Framework**       | [Next.js](https://nextjs.org/), [React](https://react.dev/)              |
+| **Styling**         | [TailwindCSS](https://tailwindcss.com/), [PostCSS](https://postcss.org/) |
+| **Deployment**      | [Vercel](https://vercel.com/)                                            |
+| **Package Manager** | [pnpm](https://pnpm.io/)                                                 |
+| **Version Control** | [GitHub](https://github.com/)                                            |
+| **AI Reference**    | [`CLAUDE.md`](https://github.com/4eckd/nmgtoursjam/blob/main/CLAUDE.md)  |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧭 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create a new feature branch:
 
-## Deploy on Vercel
+   ```bash
+   git checkout -b feat/new-tour
+   ```
+2. Commit with clear messages:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   git commit -m "feat(tour): add Mystic Falls rainforest ziplines"
+   ```
+3. Push your branch and open a pull request.
+4. Tag `@4eckd` for any core feature or design changes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📸 Content Team Notes
+
+* Add new tours in `/content` with image references and descriptions.
+* Optimize all images before committing (use `.webp` or `.avif`).
+* Include descriptive alt text for accessibility.
+* Run `pnpm lint` before pushing to keep formatting consistent.
+
+---
+
+## 📈 Deployment
+
+This site is automatically deployed to **Vercel** whenever changes are pushed to the `main` branch.
+You can view build logs and deployments in the [Vercel Dashboard](https://vercel.com/dashboard).
+
+---
+
+## 📊 Metrics & Analytics
+
+* **Page Views:** via [Hits.sh](https://hits.sh) badge above
+* **GitHub Stars / Commits:** via Shields.io
+* **Deployment Health:** through GitHub Deployments API
+
+---
+
+## 📚 Knowledge Base  
+For in-depth guides, workflow notes, and team documentation, visit the  
+👉 [NMG Tours JAM Knowledge Base](https://github.com/4eckd/nmgtoursjam/tree/main/docs)
+
+---
+
+## 📞 Support
+
+For help or questions:
+
+* Open an issue on GitHub
+* Email: **[support@nmgtoursjam.com](mailto:support@nmgtoursjam.com)**
+* Tag `@4eckd` for urgent deployment assistance
+
+---
+
+### ✨ “Let’s build memories that last a lifetime.”
+
+> *NMG Tours JAM – Where every journey tells a story.*
+
+---
