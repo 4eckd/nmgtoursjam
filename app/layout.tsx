@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Poppins, Caveat } from "next/font/google";
 import Footer from "@/app/components/Footer";
 import NavBar from "@/app/components/Navigation";
+import SessionProvider from "@/app/components/SessionProvider";
 
 // Fonts
 const poppins = Poppins({
@@ -60,14 +61,17 @@ export default function RootLayout({
           backgroundSize: "cover",
         }}
       >
-        {/* ✅ Global Navigation */}
-        <NavBar />
+        <SessionProvider>
+          {/* ✅ Global Navigation */}
+          <NavBar />
 
-        {/* ✅ Page Content */}
-        <main className="pt-24">{children}</main>
+          {/* ✅ Page Content */}
+          <main className="pt-24">{children}</main>
 
-        {/* ✅ Optional Global Footer (add later if desired) */}
-        <Footer />
+          {/* ✅ Optional Global Footer (add later if desired) */}
+          <Footer />
+        </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
