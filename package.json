@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
+    "clean": "pnpm rimraf -i /node_modules/ .next/ && pnpm run build && pnpm run start",
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
+    "@vercel/analytics": "^1.5.0",
     "claude": "^0.1.2",
     "dotenv": "^17.2.3",
     "lucide": "^0.548.0",
@@ -23,7 +25,8 @@
     "package.json": "^2.0.1",
     "prisma": "^6.18.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "rimraf": "^6.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

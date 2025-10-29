@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Poppins, Caveat } from "next/font/google";
 import Footer from "@/app/components/Footer";
 import NavBar from "@/app/components/Navigation";
