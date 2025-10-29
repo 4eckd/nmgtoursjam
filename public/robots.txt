@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block internal API routes or private assets if needed
+Disallow: /api/
+Disallow: /admin/
+
+# Point search engines to your sitemap
+Sitemap: https://nmgtoursjam.com/sitemap.xml

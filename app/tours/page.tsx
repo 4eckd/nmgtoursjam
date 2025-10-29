@@ -1,7 +1,81 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import ToursClient from '@/app/components/tours/ToursClient'
 
-export default function ToursPage() {
+interface Tour {
+  id: string
+  title: string
+  slug: string
+  description: string
+  shortDesc: string
+  price: number
+  currency: string
+  duration: number
+  maxGroupSize: number
+  difficulty: string
+  city: string
+  coverImage: string
+  category: {
+    id: string
+    name: string
+    slug: string
+  }
+  featured: boolean
+  createdAt: string
+  _count: {
+    reviews: number
+  }
+}
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+}
+
+async function getTours(): Promise<Tour[]> {
+  try {
+    // In production, use absolute URL with environment variable
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const res = await fetch(`${baseUrl}/api/tours`, {
+      cache: 'no-store', // Always fetch fresh data for tours
+    })
+
+    if (!res.ok) {
+      console.error('Failed to fetch tours:', res.status)
+      return []
+    }
+
+    const data = await res.json()
+    return data.tours || []
+  } catch (error) {
+    console.error('Error fetching tours:', error)
+    return []
+  }
+}
+
+async function getCategories(): Promise<Category[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const res = await fetch(`${baseUrl}/api/categories`, {
+      cache: 'force-cache', // Categories change infrequently
+    })
+
+    if (!res.ok) {
+      console.error('Failed to fetch categories:', res.status)
+      return []
+    }
+
+    const data = await res.json()
+    return data.categories || []
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return []
+  }
+}
+
+export default async function ToursPage() {
+  const [tours, categories] = await Promise.all([getTours(), getCategories()])
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -17,101 +91,35 @@ export default function ToursPage() {
         <div className="fixed inset-0 bg-black/60 -z-10" />
         <div className="relative z-10 text-center px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat">
-            Rafting Tours
+            Discover Jamaica
           </h1>
           <p className="text-xl text-zinc-200">
-            Experience Jamaica's rivers like never before
+            Authentic island experiences and unforgettable adventures
           </p>
         </div>
       </section>
 
       {/* Tours Listing Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Tour Card Placeholder */}
-          <div className="bg-black/40 backdrop-blur-md rounded-lg overflow-hidden border border-white/10 hover:border-emerald-400/50 transition">
-            <div className="relative h-48 bg-gradient-to-br from-emerald-600 to-emerald-900">
-              <div className="absolute inset-0 flex items-center justify-center text-white/50">
-                Tour Image Coming Soon
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                Martha Brae Rafting
+        {tours.length > 0 ? (
+          <ToursClient initialTours={tours} categories={categories} />
+        ) : (
+          <div className="text-center py-16">
+            <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/10 p-12 max-w-md mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                No Tours Available
               </h3>
-              <p className="text-zinc-300 mb-4">
-                Enjoy a peaceful 3-mile journey down the Martha Brae River on a traditional bamboo raft.
+              <p className="text-zinc-400 mb-6">
+                We're currently updating our tour offerings. Please check back
+                soon!
               </p>
-              <div className="flex items-center justify-between">
-                <span className="text-emerald-400 font-semibold text-lg">
-                  From $65/person
-                </span>
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition"
-                >
-                  Book Now
-                </Link>
-              </div>
+              <p className="text-sm text-zinc-500">
+                Make sure the database has been seeded with tour data.
+              </p>
             </div>
           </div>
-
-          {/* More tour cards coming soon */}
-          <div className="bg-black/40 backdrop-blur-md rounded-lg overflow-hidden border border-white/10 hover:border-emerald-400/50 transition">
-            <div className="relative h-48 bg-gradient-to-br from-emerald-600 to-emerald-900">
-              <div className="absolute inset-0 flex items-center justify-center text-white/50">
-                Tour Image Coming Soon
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                Rio Grande Rafting
-              </h3>
-              <p className="text-zinc-300 mb-4">
-                Experience the longest and most scenic rafting adventure on Jamaica's Rio Grande.
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-emerald-400 font-semibold text-lg">
-                  From $75/person
-                </span>
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition"
-                >
-                  Book Now
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-black/40 backdrop-blur-md rounded-lg overflow-hidden border border-white/10 hover:border-emerald-400/50 transition">
-            <div className="relative h-48 bg-gradient-to-br from-emerald-600 to-emerald-900">
-              <div className="absolute inset-0 flex items-center justify-center text-white/50">
-                Tour Image Coming Soon
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                White River Rafting
-              </h3>
-              <p className="text-zinc-300 mb-4">
-                Float down the serene White River surrounded by lush tropical landscapes.
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-emerald-400 font-semibold text-lg">
-                  From $60/person
-                </span>
-                <Link
-                  href="/contact"
-                  className="px-4 py-2 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition"
-                >
-                  Book Now
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </section>
     </div>
-  );
+  )
 }
