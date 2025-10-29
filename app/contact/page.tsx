@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -73,19 +72,10 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="text-white">
       {/* Hero Section */}
-      <section className="relative h-[40vh] flex items-center justify-center">
-        <div className="fixed inset-0 -z-20">
-          <Image
-            src="/NMGTOURS.png"
-            alt="Contact NMG Tours"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="fixed inset-0 bg-black/70 -z-10" />
-        <div className="relative z-10 text-center px-6">
+      <section className="h-[40vh] flex items-center justify-center">
+        <div className="text-center px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat">
             Get In Touch
           </h1>
@@ -96,7 +86,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Content */}
-      <section className="relative z-10 max-w-6xl mx-auto px-6 py-16">
+      <section className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div className="bg-black/40 backdrop-blur-md rounded-lg p-8 border border-white/10">

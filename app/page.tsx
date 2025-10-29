@@ -1,27 +1,10 @@
-'use client';
-
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="relative w-full overflow-hidden text-white font-poppins">
-      {/* Background Image - Fixed position for full viewport coverage */}
-      <div className="fixed inset-0 -z-20">
-        <Image
-          src="/NMGTOURS.png"
-          alt="NMG Tours Background"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* Gradient Overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/70 to-emerald-800/95 -z-10" />
-
-      {/* Hero Content - Accounts for navigation height */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
+    <div className="w-full text-white font-poppins">
+      {/* Hero Content */}
+      <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-caveat">
           Authentic Island Experiences
         </h1>
