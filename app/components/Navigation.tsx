@@ -2,9 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+// TODO: Re-enable in TRACK 4 - Authentication
+// import { useSession, signOut } from 'next-auth/react';
+import { useSession, signOut } from '@/app/components/SessionProviderWrapper';
+import { User, LogOut, LayoutDashboard } from 'lucide-react';
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const isLoading = status === 'loading';
 
   return (
     <nav
@@ -58,19 +65,110 @@ export default function Navigation() {
           <Link href="/tours" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Tours</Link>
           <Link href="/gallery" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Gallery</Link>
           <Link href="/contact" style={{ color: '#fff', textDecoration: 'none', fontWeight: 600 }}>Contact</Link>
-          <Link
-            href="/signup"
-            style={{
-              backgroundColor: '#10b981',
-              color: '#000',
-              padding: '0.5rem 1.5rem',
-              borderRadius: '9999px',
-              textDecoration: 'none',
-              fontWeight: 600
-            }}
-          >
-            Book Now
-          </Link>
+
+          {/* Auth Buttons */}
+          {session ? (
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                style={{
+                  backgroundColor: '#10b981',
+                  color: '#000',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                <User size={18} />
+                {session?.user?.name?.split(' ')[0] || 'Account'}
+              </button>
+
+              {userMenuOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '0.5rem',
+                  backgroundColor: '#000',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '0.5rem',
+                  minWidth: '200px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+                  zIndex: 10000
+                }}>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setUserMenuOpen(false)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '0.75rem 1rem',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      borderBottom: '1px solid rgba(16, 185, 129, 0.2)'
+                    }}
+                  >
+                    <LayoutDashboard size={18} />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      signOut({ callbackUrl: '/' });
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      color: '#ef4444',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontWeight: 500
+                    }}
+                  >
+                    <LogOut size={18} />
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                style={{
+                  color: '#fff',
+                  textDecoration: 'none',
+                  fontWeight: 600
+                }}
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                style={{
+                  backgroundColor: '#10b981',
+                  color: '#000',
+                  padding: '0.5rem 1.5rem',
+                  borderRadius: '9999px',
+                  textDecoration: 'none',
+                  fontWeight: 600
+                }}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -110,22 +208,78 @@ export default function Navigation() {
           <Link href="/tours" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Tours</Link>
           <Link href="/gallery" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Gallery</Link>
           <Link href="/contact" onClick={() => setMenuOpen(false)} style={{ color: '#fff', textDecoration: 'none', padding: '0.5rem', fontSize: '1.125rem' }}>Contact</Link>
-          <Link
-            href="/signup"
-            onClick={() => setMenuOpen(false)}
-            style={{
-              backgroundColor: '#10b981',
-              color: '#000',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '9999px',
-              textDecoration: 'none',
-              fontWeight: 600,
-              marginTop: '0.5rem',
-              display: 'inline-block'
-            }}
-          >
-            Book Now
-          </Link>
+
+          {/* Mobile Auth Buttons */}
+          {!isLoading && (
+            session ? (
+              <>
+              <Link
+                href="/dashboard"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  backgroundColor: '#10b981',
+                  color: '#000',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '9999px',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  marginTop: '0.5rem',
+                  display: 'inline-block'
+                }}
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  signOut({ callbackUrl: '/' });
+                }}
+                style={{
+                  color: '#ef4444',
+                  background: 'none',
+                  border: 'none',
+                  padding: '0.5rem',
+                  fontSize: '1.125rem',
+                  cursor: 'pointer',
+                  fontWeight: 500
+                }}
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  color: '#fff',
+                  textDecoration: 'none',
+                  padding: '0.5rem',
+                  fontSize: '1.125rem'
+                }}
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  backgroundColor: '#10b981',
+                  color: '#000',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '9999px',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  marginTop: '0.5rem',
+                  display: 'inline-block'
+                }}
+              >
+                Sign Up
+              </Link>
+              </>
+            )
+          )}
         </div>
       )}
 
