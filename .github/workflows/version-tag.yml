@@ -1,0 +1,201 @@
+name: Version Tagging and Release
+
+# Trigger on push to main or integration branch
+on:
+  push:
+    branches:
+      - main
+      - integration/mvp-launch
+
+# Ensure only one workflow runs at a time
+concurrency:
+  group: version-tag-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  version-and-tag:
+    name: Version Bump and Tag Creation
+    runs-on: ubuntu-latest
+
+    # Only run if commit message contains version keywords or is a merge
+    if: |
+      contains(github.event.head_commit.message, 'feat') ||
+      contains(github.event.head_commit.message, 'fix') ||
+      contains(github.event.head_commit.message, 'BREAKING CHANGE') ||
+      contains(github.event.head_commit.message, 'refactor') ||
+      github.event.head_commit.message contains 'release'
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper versioning
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine version bump
+        id: version
+        run: |
+          # Get the last commit message
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+
+          # Determine bump type based on conventional commits
+          if echo "$COMMIT_MSG" | grep -qE "^(feat|feature)\(.*\)!:" || echo "$COMMIT_MSG" | grep -q "BREAKING CHANGE"; then
+            BUMP="major"
+          elif echo "$COMMIT_MSG" | grep -qE "^(feat|feature)\(.*\):"; then
+            BUMP="minor"
+          elif echo "$COMMIT_MSG" | grep -qE "^(fix|refactor|perf|style|docs|chore)\(.*\):"; then
+            BUMP="patch"
+          else
+            BUMP="skip"
+          fi
+
+          echo "bump=$BUMP" >> $GITHUB_OUTPUT
+          echo "Version bump type: $BUMP"
+
+      - name: Get current version
+        id: current_version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+
+      - name: Bump version
+        if: steps.version.outputs.bump != 'skip'
+        id: bump
+        run: |
+          BUMP_TYPE="${{ steps.version.outputs.bump }}"
+
+          # Use npm version to bump (without creating git tag)
+          NEW_VERSION=$(npm version $BUMP_TYPE --no-git-tag-version | sed 's/v//')
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+      - name: Update CHANGELOG
+        if: steps.version.outputs.bump != 'skip'
+        run: |
+          NEW_VERSION="${{ steps.bump.outputs.new_version }}"
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          DATE=$(date +%Y-%m-%d)
+
+          # Create changelog entry
+          ENTRY="## [$NEW_VERSION] - $DATE\n\n"
+
+          # Parse commit message for changelog
+          if echo "$COMMIT_MSG" | grep -qE "^feat"; then
+            ENTRY="${ENTRY}### Added\n- ${COMMIT_MSG#*: }\n"
+          elif echo "$COMMIT_MSG" | grep -qE "^fix"; then
+            ENTRY="${ENTRY}### Fixed\n- ${COMMIT_MSG#*: }\n"
+          elif echo "$COMMIT_MSG" | grep -qE "^refactor"; then
+            ENTRY="${ENTRY}### Changed\n- ${COMMIT_MSG#*: }\n"
+          fi
+
+          # Prepend to CHANGELOG (after header)
+          if [ -f docs/CHANGELOG.md ]; then
+            # Insert new entry after the first heading
+            awk -v entry="$ENTRY" '
+              NR==1 {print; print ""; print entry; next}
+              {print}
+            ' docs/CHANGELOG.md > docs/CHANGELOG.md.tmp
+            mv docs/CHANGELOG.md.tmp docs/CHANGELOG.md
+          else
+            echo -e "# Changelog\n\n$ENTRY" > docs/CHANGELOG.md
+          fi
+
+          echo "CHANGELOG.md updated with version $NEW_VERSION"
+
+      - name: Commit version bump
+        if: steps.version.outputs.bump != 'skip'
+        run: |
+          git add package.json docs/CHANGELOG.md
+          git commit -m "chore: bump version to v${{ steps.bump.outputs.new_version }}"
+
+      - name: Create annotated tag
+        if: steps.version.outputs.bump != 'skip'
+        run: |
+          TAG="${{ steps.bump.outputs.tag }}"
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+
+          # Create detailed tag message
+          TAG_MSG="Release $TAG\n\n"
+          TAG_MSG="${TAG_MSG}Changes:\n${COMMIT_MSG}\n\n"
+          TAG_MSG="${TAG_MSG}See docs/CHANGELOG.md for complete details."
+
+          # Create annotated tag
+          git tag -a "$TAG" -m "$TAG_MSG"
+
+          echo "Created tag: $TAG"
+
+      - name: Push changes and tag
+        if: steps.version.outputs.bump != 'skip'
+        run: |
+          git push origin ${{ github.ref_name }}
+          git push origin ${{ steps.bump.outputs.tag }}
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.bump != 'skip'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump.outputs.tag }}
+          release_name: ${{ steps.bump.outputs.tag }}
+          body: |
+            ## Release ${{ steps.bump.outputs.tag }}
+
+            ### Changes
+            ${{ github.event.head_commit.message }}
+
+            See [CHANGELOG.md](./docs/CHANGELOG.md) for complete details.
+
+            ---
+
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.current_version.outputs.version }}...${{ steps.bump.outputs.tag }}
+          draft: false
+          prerelease: ${{ startsWith(steps.bump.outputs.tag, 'v0.') }}
+
+      - name: Summary
+        if: steps.version.outputs.bump != 'skip'
+        run: |
+          echo "## Version Tag Created 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Previous Version**: v${{ steps.current_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **New Version**: ${{ steps.bump.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Bump Type**: ${{ steps.version.outputs.bump }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View release: https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Skip summary
+        if: steps.version.outputs.bump == 'skip'
+        run: |
+          echo "## No Version Tag Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Commit message did not match conventional commit pattern for versioning." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
