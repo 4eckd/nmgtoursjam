@@ -1,16 +1,15 @@
 export default function RefundsPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-black text-zinc-100">
-      <main className="flex-1 w-full px-6 sm:px-8 lg:px-10 py-12 max-w-3xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center sm:text-left">
-          Refund & Cancellation Policy
-        </h1>
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-12 max-w-3xl mx-auto">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center sm:text-left text-white">
+        Refund & Cancellation Policy
+      </h1>
 
-        <p className="text-zinc-300 leading-relaxed mb-6">
-          At NMG Tours, we value our customers and strive to provide transparent and fair refund and cancellation terms. Please read the following policy carefully to understand your rights and responsibilities when booking a tour or making a purchase with us.
-        </p>
+      <p className="text-zinc-300 leading-relaxed mb-6">
+        At NMG Tours, we value our customers and strive to provide transparent and fair refund and cancellation terms. Please read the following policy carefully to understand your rights and responsibilities when booking a tour or making a purchase with us.
+      </p>
 
-        <section className="space-y-4 text-zinc-400">
+      <section className="space-y-4 text-zinc-400">
           <div>
             <h2 className="text-lg font-semibold text-zinc-200 mb-2">
               1. Cancellations by Customers
@@ -59,7 +58,6 @@ export default function RefundsPage() {
             </p>
           </div>
         </section>
-      </main>
     </div>
   );
 }

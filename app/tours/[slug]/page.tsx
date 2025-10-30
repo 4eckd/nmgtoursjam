@@ -13,6 +13,7 @@ import {
   ArrowLeft,
 } from 'lucide-react'
 import ImageGallery from '@/app/components/tours/ImageGallery'
+import TourBookingSection from '@/app/components/tours/TourBookingSection'
 
 interface TourDetailProps {
   params: Promise<{
@@ -299,49 +300,17 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
           </div>
 
           {/* Booking Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-6">
-              <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-6">
-                {/* Price */}
-                <div className="mb-6 pb-6 border-b border-white/10">
-                  <div className="text-zinc-400 text-sm mb-1">From</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-emerald-400">
-                      ${tour.price}
-                    </span>
-                    <span className="text-zinc-400">
-                      {tour.currency} / person
-                    </span>
-                  </div>
-                </div>
-
-                {/* Availability Notice */}
-                <div className="mb-6">
-                  <div className="flex items-center gap-2 text-emerald-400 mb-2">
-                    <Calendar className="w-5 h-5" />
-                    <span className="font-semibold">Available Dates</span>
-                  </div>
-                  <p className="text-sm text-zinc-400">
-                    {tour.availability.length > 0
-                      ? `${tour.availability.length} dates available in the next 30 days`
-                      : 'Contact us for availability'}
-                  </p>
-                </div>
-
-                {/* Book Now Button */}
-                <Link
-                  href={`/contact?tour=${tour.slug}`}
-                  className="block w-full px-6 py-4 bg-emerald-400 text-black text-center font-bold rounded-lg hover:bg-emerald-300 transition-colors mb-4"
-                >
-                  Book Now
-                </Link>
-
-                <p className="text-xs text-zinc-500 text-center">
-                  Contact us to check availability and complete your booking
-                </p>
-              </div>
-            </div>
-          </div>
+          <TourBookingSection
+            tour={{
+              id: tour.id,
+              title: tour.title,
+              price: tour.price,
+              currency: tour.currency,
+              maxGroupSize: tour.maxGroupSize,
+              duration: tour.duration,
+            }}
+            availabilityCount={tour.availability.length}
+          />
         </div>
       </section>
     </div>

@@ -72,20 +72,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white`}
-        style={{
-          background:
-            "linear-gradient(135deg, #4747475e 15%, #853e3e83 50%, #55d2836c 90%)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
+        className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white bg-black`}
       >
+        {/* Background Image Layer */}
+        <div className="fixed inset-0 -z-30">
+          <div className="absolute inset-0 bg-[url('/NMGTOURS.png')] bg-cover bg-center bg-no-repeat" />
+        </div>
+
+        {/* Gradient Overlay Layer */}
+        <div className="fixed inset-0 -z-20 bg-gradient-to-b from-black/30 via-black/60 to-black/90" />
+
         <SessionProvider>
           {/* ✅ Global Navigation */}
           <NavBar />
 
           {/* ✅ Page Content */}
-          <main className="pt-24">{children}</main>
+          <main className="relative z-0 pt-24 min-h-[calc(100vh-200px)]">{children}</main>
 
           {/* ✅ Global Footer */}
           <Footer />

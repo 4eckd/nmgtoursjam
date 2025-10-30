@@ -1,20 +1,9 @@
-import Image from "next/image";
-
 export default function AboutPage() {
   return (
-    <div className="min-h-screen text-white">
+    <div className="text-white">
       {/* Hero Section */}
-      <section className="relative h-[50vh] flex items-center justify-center">
-        <div className="fixed inset-0 -z-20">
-          <Image
-            src="/NMGTOURS.png"
-            alt="About NMG Tours"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="fixed inset-0 bg-black/70 -z-10" />
-        <div className="relative z-10 text-center px-6">
+      <section className="h-[40vh] flex items-center justify-center">
+        <div className="text-center px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat">
             About NMG Tours
           </h1>
@@ -25,7 +14,7 @@ export default function AboutPage() {
       </section>
 
       {/* Main Content */}
-      <section className="relative z-10 max-w-4xl mx-auto px-6 py-16">
+      <section className="max-w-4xl mx-auto px-6 py-16">
         {/* Our Story */}
         <div className="mb-16">
           <h2 className="text-4xl font-bold mb-6 text-emerald-400 font-caveat">

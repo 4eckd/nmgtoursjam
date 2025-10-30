@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import ToursClient from '@/app/components/tours/ToursClient'
 
 interface Tour {
@@ -77,20 +76,11 @@ export default async function ToursPage() {
   const [tours, categories] = await Promise.all([getTours(), getCategories()])
 
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Hero Section */}
-      <section className="relative h-[40vh] flex items-center justify-center">
-        <div className="fixed inset-0 -z-20">
-          <Image
-            src="/NMGTOURS.png"
-            alt="Rafting Tours Background"
-            fill
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="fixed inset-0 bg-black/60 -z-10" />
-        <div className="relative z-10 text-center px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat">
+      <section className="h-[40vh] flex items-center justify-center">
+        <div className="text-center px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat text-white">
             Discover Jamaica
           </h1>
           <p className="text-xl text-zinc-200">
@@ -100,7 +90,7 @@ export default async function ToursPage() {
       </section>
 
       {/* Tours Listing Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+      <section className="max-w-7xl mx-auto px-6 py-16">
         {tours.length > 0 ? (
           <ToursClient initialTours={tours} categories={categories} />
         ) : (

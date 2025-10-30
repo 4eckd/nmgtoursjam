@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 
 // GET /api/bookings - List user's bookings
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Get userId from session
-    const userId = 'temp-user-id'
+    // Get authenticated user
+    const session = await auth()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const userId = session.user.id
 
     const bookings = await prisma.booking.findMany({
       where: { userId },
@@ -35,11 +41,16 @@ export async function GET(request: NextRequest) {
 // POST /api/bookings - Create a new booking
 export async function POST(request: NextRequest) {
   try {
+    // Get authenticated user
+    const session = await auth()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const body = await request.json()
     const { tourId, tourDate, guests, guestName, guestEmail, guestPhone, specialRequests } = body
 
-    // TODO: Get userId from session
-    const userId = 'temp-user-id'
+    const userId = session.user.id
 
     // Get tour details
     const tour = await prisma.tour.findUnique({

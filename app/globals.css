@@ -1,26 +1,303 @@
 @import "tailwindcss";
 
+/* ========================================
+   NMG Tours Jamaica - Design Token System
+   Version: 2.0.0
+   Last Updated: 2025-10-29
+
+   CRITICAL: All components MUST use these
+   CSS variables. No hard-coded values.
+   ======================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Legacy variables (kept for compatibility) */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  /* ==================
+     Brand Colors
+     ================== */
+
+  /* Primary - Emerald Green (Jamaica's lush landscapes) */
+  --color-primary: #10b981;
+  --color-primary-hover: #34d399;
+  --color-primary-active: #059669;
+  --color-primary-muted: rgba(16, 185, 129, 0.1);
+
+  /* ==================
+     Surface Colors
+     ================== */
+
+  --color-surface-dark: #000000;
+  --color-surface-elevated: #18181b;        /* zinc-900 */
+  --color-surface-card: rgba(39, 39, 42, 0.7);  /* zinc-800 with 70% opacity */
+  --color-surface-card-hover: rgba(39, 39, 42, 0.9);
+
+  /* ==================
+     Content Colors
+     ================== */
+
+  --color-content-primary: #ffffff;
+  --color-content-secondary: #a1a1aa;       /* zinc-400 */
+  --color-content-tertiary: #71717a;        /* zinc-500 */
+  --color-content-on-primary: #000000;      /* Text on primary color backgrounds */
+
+  /* ==================
+     Border Colors
+     ================== */
+
+  --color-border-primary: rgba(255, 255, 255, 0.1);
+  --color-border-secondary: #3f3f46;        /* zinc-700 */
+  --color-border-accent: rgba(16, 185, 129, 0.3);
+
+  /* ==================
+     Difficulty Badge Colors
+     ================== */
+
+  --color-difficulty-easy: #22c55e;
+  --color-difficulty-easy-bg: rgba(34, 197, 94, 0.2);
+  --color-difficulty-moderate: #eab308;
+  --color-difficulty-moderate-bg: rgba(234, 179, 8, 0.2);
+  --color-difficulty-challenging: #f97316;
+  --color-difficulty-challenging-bg: rgba(249, 115, 22, 0.2);
+  --color-difficulty-extreme: #ef4444;
+  --color-difficulty-extreme-bg: rgba(239, 68, 68, 0.2);
+
+  /* ==================
+     Semantic Colors
+     ================== */
+
+  --color-success: #22c55e;
+  --color-success-bg: rgba(34, 197, 94, 0.1);
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.1);
+  --color-error: #ef4444;
+  --color-error-bg: rgba(239, 68, 68, 0.1);
+  --color-info: #3b82f6;
+  --color-info-bg: rgba(59, 130, 246, 0.1);
+
+  /* ==================
+     Spacing System
+     ================== */
+
+  /* Container Padding */
+  --spacing-page-x: 1.5rem;     /* 24px */
+  --spacing-page-y: 2rem;       /* 32px */
+
+  /* Component Spacing */
+  --spacing-section: 4rem;      /* 64px - between major sections */
+  --spacing-card: 1.5rem;       /* 24px - card internal padding */
+  --spacing-button-x: 2rem;     /* 32px - button horizontal padding */
+  --spacing-button-y: 0.75rem;  /* 12px - button vertical padding */
+
+  /* Gaps */
+  --spacing-gap-xs: 0.25rem;    /* 4px */
+  --spacing-gap-sm: 0.5rem;     /* 8px */
+  --spacing-gap-md: 1rem;       /* 16px */
+  --spacing-gap-lg: 1.5rem;     /* 24px */
+  --spacing-gap-xl: 2rem;       /* 32px */
+
+  /* ==================
+     Typography
+     ================== */
+
+  /* Font Families (loaded in layout.tsx) */
+  --font-primary: var(--font-poppins), system-ui, sans-serif;
+  --font-accent: var(--font-caveat), cursive;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+  --text-6xl: 3.75rem;     /* 60px */
+  --text-7xl: 4.5rem;      /* 72px */
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* ==================
+     Effects
+     ================== */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-accent: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+
+  /* Backdrop Blur */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;   /* Fully rounded (pills, circles) */
+
+  /* Opacity Levels */
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+
+  /* ==================
+     Z-Index Layers
+     ================== */
+
+  --z-background: -30;
+  --z-overlay: -20;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-header: 30;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 100;
+
+  /* ==================
+     Transitions
+     ================== */
+
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 500ms;
 }
 
+/* ==================
+   Tailwind Theme Integration
+   ================== */
+
 @theme inline {
+  /* Legacy compatibility */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* ==================
+     Extended Color Palette
+     Map CSS variables to Tailwind utilities
+     Usage: bg-primary, text-primary, etc.
+     ================== */
+
+  /* Primary Brand Colors */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-active: var(--color-primary-active);
+  --color-primary-muted: var(--color-primary-muted);
+
+  /* Surface Colors */
+  --color-surface-dark: var(--color-surface-dark);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-surface-card: var(--color-surface-card);
+  --color-surface-card-hover: var(--color-surface-card-hover);
+
+  /* Content (Text) Colors */
+  --color-content-primary: var(--color-content-primary);
+  --color-content-secondary: var(--color-content-secondary);
+  --color-content-tertiary: var(--color-content-tertiary);
+  --color-content-on-primary: var(--color-content-on-primary);
+
+  /* Border Colors */
+  --color-border-primary: var(--color-border-primary);
+  --color-border-secondary: var(--color-border-secondary);
+  --color-border-accent: var(--color-border-accent);
+
+  /* Difficulty Badge Colors */
+  --color-difficulty-easy: var(--color-difficulty-easy);
+  --color-difficulty-easy-bg: var(--color-difficulty-easy-bg);
+  --color-difficulty-moderate: var(--color-difficulty-moderate);
+  --color-difficulty-moderate-bg: var(--color-difficulty-moderate-bg);
+  --color-difficulty-challenging: var(--color-difficulty-challenging);
+  --color-difficulty-challenging-bg: var(--color-difficulty-challenging-bg);
+  --color-difficulty-extreme: var(--color-difficulty-extreme);
+  --color-difficulty-extreme-bg: var(--color-difficulty-extreme-bg);
+
+  /* Semantic Colors */
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-warning: var(--color-warning);
+  --color-warning-bg: var(--color-warning-bg);
+  --color-error: var(--color-error);
+  --color-error-bg: var(--color-error-bg);
+  --color-info: var(--color-info);
+  --color-info-bg: var(--color-info-bg);
+
+  /* ==================
+     Extended Spacing
+     ================== */
+
+  --spacing-page-x: var(--spacing-page-x);
+  --spacing-page-y: var(--spacing-page-y);
+  --spacing-section: var(--spacing-section);
+  --spacing-card: var(--spacing-card);
+  --spacing-button-x: var(--spacing-button-x);
+  --spacing-button-y: var(--spacing-button-y);
+  --spacing-gap-xs: var(--spacing-gap-xs);
+  --spacing-gap-sm: var(--spacing-gap-sm);
+  --spacing-gap-md: var(--spacing-gap-md);
+  --spacing-gap-lg: var(--spacing-gap-lg);
+  --spacing-gap-xl: var(--spacing-gap-xl);
+
+  /* ==================
+     Extended Effects
+     ================== */
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-accent: var(--shadow-accent);
+
+  /* Z-Index */
+  --z-background: var(--z-background);
+  --z-overlay: var(--z-overlay);
+  --z-base: var(--z-base);
+  --z-dropdown: var(--z-dropdown);
+  --z-sticky: var(--z-sticky);
+  --z-header: var(--z-header);
+  --z-modal: var(--z-modal);
+  --z-popover: var(--z-popover);
+  --z-tooltip: var(--z-tooltip);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ==================
+   Base Styles
+   ================== */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-primary);
 }
