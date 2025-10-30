@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Clock, Users, MapPin } from 'lucide-react'
+import { DifficultyBadge, CategoryBadge, FeaturedBadge } from '@/app/components/ui'
 
 interface TourCardProps {
   id: string
@@ -20,17 +21,6 @@ interface TourCardProps {
   }
   featured?: boolean
   reviewCount?: number
-}
-
-// Difficulty badge mapping using CSS variables
-const getDifficultyClasses = (difficulty: string) => {
-  const difficultyMap: Record<string, string> = {
-    EASY: 'bg-difficulty-easy-bg text-difficulty-easy',
-    MODERATE: 'bg-difficulty-moderate-bg text-difficulty-moderate',
-    CHALLENGING: 'bg-difficulty-challenging-bg text-difficulty-challenging',
-    EXTREME: 'bg-difficulty-extreme-bg text-difficulty-extreme',
-  }
-  return difficultyMap[difficulty] || difficultyMap.EASY
 }
 
 export default function TourCard({
@@ -68,14 +58,14 @@ export default function TourCard({
 
         {/* Featured Badge */}
         {featured && (
-          <div className="absolute top-3 right-3 bg-primary hover:bg-primary-hover text-content-on-primary px-3 py-1 rounded-full text-xs font-bold uppercase">
-            Featured
+          <div className="absolute top-3 right-3">
+            <FeaturedBadge />
           </div>
         )}
 
         {/* Category Badge */}
-        <div className="absolute top-3 left-3 bg-surface-card backdrop-blur-sm text-content-primary px-3 py-1 rounded-full text-xs font-semibold">
-          {category.name}
+        <div className="absolute top-3 left-3">
+          <CategoryBadge category={category.name} />
         </div>
       </Link>
 
@@ -111,13 +101,7 @@ export default function TourCard({
 
         {/* Difficulty Badge */}
         <div className="mb-4">
-          <span
-            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getDifficultyClasses(
-              difficulty
-            )}`}
-          >
-            {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}
-          </span>
+          <DifficultyBadge difficulty={difficulty as 'EASY' | 'MODERATE' | 'CHALLENGING' | 'EXTREME'} />
         </div>
 
         {/* Price and CTA */}
