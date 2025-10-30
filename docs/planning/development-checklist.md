@@ -66,40 +66,42 @@
 - [x] Run migrations (using db:push for development)
 
 ### Tour Listing Page
-- [ ] Create tours page layout
-- [ ] Build tour card component
-- [ ] Implement grid/list view toggle
-- [ ] Add search functionality
-- [ ] Create filter sidebar
-  - [ ] Price range slider
-  - [ ] Duration filter
-  - [ ] Difficulty selector
-  - [ ] Category checkboxes
-- [ ] Add sorting options
-- [ ] Implement pagination
-- [ ] Add loading skeletons
-- [ ] Handle empty states
+- [x] Create tours page layout
+- [x] Build tour card component
+- [ ] Implement grid/list view toggle (deferred to post-MVP)
+- [x] Add search functionality
+- [x] Create filter sidebar
+  - [x] Price range filters (min/max)
+  - [ ] Duration filter (using sort instead)
+  - [x] Difficulty selector
+  - [x] Category dropdown
+- [x] Add sorting options (6 total: Featured, Price x2, Duration x2, Newest)
+- [ ] Implement pagination (deferred to post-MVP)
+- [ ] Add loading skeletons (pending)
+- [x] Handle empty states
 
 ### Tour Detail Page
-- [ ] Create dynamic route
-- [ ] Build image gallery component
-- [ ] Add tour info sections
-  - [ ] Overview tab
-  - [ ] Itinerary tab
-  - [ ] What's included
-  - [ ] Meeting point
-- [ ] Create availability calendar
-- [ ] Build booking widget
-- [ ] Add guide profile card
-- [ ] Implement share functionality
-- [ ] Add breadcrumb navigation
+- [x] Create dynamic route (`/tours/[slug]`)
+- [x] Build image gallery component with lightbox
+- [x] Add tour info sections
+  - [x] Overview (description)
+  - [ ] Itinerary tab (deferred - using highlights instead)
+  - [x] What's included
+  - [x] What's NOT included
+  - [x] What to bring
+  - [x] Meeting point
+- [ ] Create availability calendar (deferred to TRACK 5)
+- [x] Build booking widget (sidebar with Book Now CTA)
+- [ ] Add guide profile card (deferred to post-MVP)
+- [ ] Implement share functionality (deferred to post-MVP)
+- [x] Add breadcrumb navigation (Back to Tours button)
 
 ### Tour Search
-- [ ] Implement full-text search
-- [ ] Add search suggestions
-- [ ] Create recent searches
-- [ ] Build search filters
-- [ ] Add search results page
+- [x] Implement full-text search (title, description, shortDesc, city)
+- [ ] Add search suggestions (deferred to post-MVP)
+- [ ] Create recent searches (deferred to post-MVP)
+- [x] Build search filters (integrated in listing page)
+- [x] Add search results page (integrated in listing page)
 
 ## 🎉 Jam/Event System
 
