@@ -35,7 +35,9 @@
       "Bash(npm version:*)",
       "Bash(cat:*)",
       "Bash(gh run list:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(git log:*)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []
