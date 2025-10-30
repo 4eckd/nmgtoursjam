@@ -27,7 +27,15 @@
       "Bash(git rm:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr view:*)",
-      "Bash(git pull:*)"
+      "Bash(gh issue view:*)",
+      "Bash(git pull:*)",
+      "Bash(gh issue list)",
+      "Bash(gh issue list:*)",
+      "Bash(gh repo view)",
+      "Bash(npm version:*)",
+      "Bash(cat:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": [],
     "ask": []
