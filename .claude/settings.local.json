@@ -1,8 +1,33 @@
 {
   "permissions": {
     "allow": [
+      "Bash(pnpm build)",
       "Bash(pnpm build:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm db:push)",
+      "Bash(pnpm db:seed)",
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:generate:*)",
+      "Bash(pnpm db:migrate)",
+      "Bash(pnpm db:migrate:*)",
+      "Bash(pnpm db:studio)",
+      "Bash(pnpm db:push)",
+      "Bash(npx prisma init)",
+      "Bash(npx prisma generate)",
+      "Bash(npx prisma db push)",
+      "Bash(npx prisma db seed)",
+      "Bash(npx prisma migrate dev)",
+      "Bash(npx prisma migrate deploy)",
+      "Bash(npx prisma migrate reset)",
+      "Bash(npx prisma studio)",
+      "Bash(git rm:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

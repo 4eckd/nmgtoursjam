@@ -3,26 +3,26 @@
 ## 🚀 Project Setup & Foundation
 
 ### Environment Setup
-- [ ] Fork and clone repository
-- [ ] Install Node.js 18+ and npm
-- [ ] Install PostgreSQL locally or set up Supabase
-- [ ] Install VS Code with recommended extensions
+- [x] Fork and clone repository
+- [x] Install Node.js 18+ and npm
+- [x] Install PostgreSQL locally or set up Supabase
+- [x] Install VS Code with recommended extensions
 - [ ] Set up Git hooks for linting
 
 ### Initial Configuration
-- [ ] Install all npm dependencies
-- [ ] Configure TypeScript (`tsconfig.json`)
-- [ ] Set up Tailwind CSS
-- [ ] Configure ESLint and Prettier
-- [ ] Create `.env.local` with all variables
-- [ ] Initialize Prisma
+- [x] Install all npm dependencies
+- [x] Configure TypeScript (`tsconfig.json`)
+- [x] Set up Tailwind CSS
+- [x] Configure ESLint and Prettier
+- [x] Create `.env.local` with all variables
+- [x] Initialize Prisma
 
 ### Project Structure
-- [ ] Create folder structure as per plan
-- [ ] Set up path aliases in TypeScript
-- [ ] Create initial layout files
-- [ ] Set up global styles
-- [ ] Configure fonts
+- [x] Create folder structure as per plan
+- [x] Set up path aliases in TypeScript
+- [x] Create initial layout files
+- [x] Set up global styles
+- [x] Configure fonts
 
 ## 🔐 Authentication System
 
@@ -58,12 +58,12 @@
 ## 🏔️ Tour System
 
 ### Database Schema
-- [ ] Create Tour model in Prisma
-- [ ] Add Guide model
-- [ ] Create Category model
-- [ ] Set up Availability model
-- [ ] Add relationships
-- [ ] Run migrations
+- [x] Create Tour model in Prisma
+- [x] Add Guide model (via User model with roles)
+- [x] Create Category model
+- [x] Set up Availability model
+- [x] Add relationships
+- [x] Run migrations (using db:push for development)
 
 ### Tour Listing Page
 - [ ] Create tours page layout
