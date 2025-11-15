@@ -1,0 +1,124 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, integration/*, feature/*, claude/*]
+  pull_request:
+    branches: [main, integration/*]
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '8'
+
+jobs:
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: TypeScript Type Check
+        run: pnpm build
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run npm audit
+        run: pnpm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for secrets in commits
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
+
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: [quality, security]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js
+        run: pnpm build
+
+      - name: Check bundle size
+        run: |
+          if [ -d .next ]; then
+            SIZE=$(du -sh .next | cut -f1)
+            echo "Bundle size: $SIZE"
+          fi
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [quality, security, build]
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.quality.result }}" != "success" ] || \
+             [ "${{ needs.security.result }}" != "success" ] || \
+             [ "${{ needs.build.result }}" != "success" ]; then
+            echo "❌ CI pipeline failed"
+            exit 1
+          else
+            echo "✅ All CI checks passed"
+          fi

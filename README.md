@@ -26,18 +26,50 @@
 
 ---
 
-## 🌍 About  
+## 🌍 About
 
-Welcome to **NMG Tours JAM**, your gateway to unforgettable Jamaican adventures.  
+Welcome to **NMG Tours JAM**, your gateway to unforgettable Jamaican adventures.
 This repository powers [nmgtoursjam.com](https://nmgtoursjam.com/) — a modern, high-performance web app that connects travelers with authentic local experiences.
+
+**Current Status**: MVP Development (60% Complete) | **Version**: 1.0.0 | **Branch**: `main`
+
+> 📋 **Quick Links**: [MVP Status](MVP-STATUS.md) | [Main Baseline](MAIN_BASELINE.md) | [Documentation](docs/README.md) | [Development Guide](CLAUDE.md)
 
 ---
 
-## 🚀 Purpose  
+## 🎯 MVP Progress
 
-- Present the full range of NMG’s curated tours and travel packages.  
-- Provide a smooth, mobile-first booking experience.  
-- Keep performance optimized with fast-loading images and lean code.  
+```
+Foundation:         ████████████████████████ 100% ✅
+Database:           ████████████████████████ 100% ✅
+Tours System:       ████████████████░░░░░░░░  80% 🚧
+Authentication:     ████████████░░░░░░░░░░░░  60% 🚧
+Booking & Payments: ░░░░░░░░░░░░░░░░░░░░░░░░   0% ⏳
+
+Overall:            ████████████░░░░░░░░░░░░  60%
+```
+
+**What's Complete**:
+- ✅ Complete design system (11 docs, 5 mockups, 80+ components planned)
+- ✅ Database schema (10 models, Prisma ORM)
+- ✅ API routes (6 endpoints)
+- ✅ Tours listing & detail pages
+- ✅ Authentication setup (NextAuth.js)
+- ✅ CI/CD pipeline (4 GitHub Actions workflows)
+- ✅ Performance monitoring (Lighthouse CI)
+
+**Next Up**:
+- 🚧 Complete tours search & filters
+- 🚧 User dashboard
+- ⏳ Booking flow & Stripe payments
+
+---
+
+## 🚀 Purpose
+
+- Present the full range of NMG's curated tours and travel packages.
+- Provide a smooth, mobile-first booking experience.
+- Keep performance optimized with fast-loading images and lean code.
 - Maintain a content-flexible structure so admins can easily update tours or pricing.  
 
 ---

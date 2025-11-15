@@ -95,11 +95,26 @@ prisma/
 └── schema.prisma           # Database schema
 
 docs/                       # Project documentation
+├── design/                 # Design system (11 files)
+│   ├── README.md          # Design system overview
+│   ├── STATUS.md          # Implementation tracking
+│   ├── mockups/           # ASCII wireframes (5 files)
+│   ├── flows/             # User journeys (2 files)
+│   └── tokens/            # Design tokens & component library (2 files)
+├── devops/                 # DevOps documentation (5 files)
+│   ├── README.md          # CI/CD overview
+│   ├── CI_CD_SETUP.md     # Pipeline documentation
+│   ├── DEPLOYMENT.md      # Vercel deployment guide
+│   ├── TESTING.md         # Testing strategy
+│   └── BRANCH_STRATEGY.md # Git workflow
 ├── planning/
 │   ├── engineering-plan.md
 │   └── development-checklist.md
+├── technical/
+│   └── technical-specification.md
 └── guides/
-    └── quick-start-guide.md
+    ├── quick-start-guide.md
+    └── deployment-guide.md
 ```
 
 ### Color System & Theming
@@ -108,22 +123,40 @@ docs/                       # Project documentation
 
 **Color Palette**:
 - **Primary**: Emerald (#10b981) - Main CTAs, links, accents
+- **Primary Light**: Emerald (#34d399) - Hover states
+- **Primary Dark**: Emerald (#059669) - Active states
 - **Secondary**: Black/Dark grays - Backgrounds, navigation
 - **Accent**: White/Light colors - Text, contrast elements
 - **Gradient**: Multi-tone gradient (gray → red-brown → emerald) for visual depth
+  - CSS: `linear-gradient(135deg, #4747475e 15%, #853e3e83 50%, #55d2836c 90%)`
+
+**CSS Design Tokens** (defined in `app/globals.css`):
+```css
+--color-primary: #10b981;           /* Emerald 500 - Main brand */
+--color-primary-light: #34d399;     /* Emerald 400 - Hover */
+--color-primary-dark: #059669;      /* Emerald 600 - Active */
+--color-secondary: #000000;         /* Black - Backgrounds */
+--color-white: #ffffff;             /* White - Text */
+--gradient-primary: linear-gradient(135deg, #4747475e 15%, #853e3e83 50%, #55d2836c 90%);
+```
 
 **Usage in Components**:
 ```tsx
-// Primary brand color (emerald)
+// ✅ Using Tailwind classes
 <button className="bg-emerald-400 hover:bg-emerald-300">Book Now</button>
 
-// Dark backgrounds with transparency
+// ✅ Using CSS variables
+<div style={{ color: 'var(--color-primary)' }}>
+
+// ✅ Dark backgrounds with transparency
 <div className="bg-black/70 backdrop-blur-md">
 
-// Text colors
+// ✅ Text colors
 <p className="text-white">Main content</p>
 <p className="text-zinc-400">Secondary text</p>
 ```
+
+**Reference**: See `docs/design/tokens/DESIGN_TOKENS.md` for complete design token specifications.
 
 ### Font System
 
@@ -136,6 +169,70 @@ Two Google Fonts are configured in `app/layout.tsx`:
   - Variable: `--font-caveat`
 
 These are loaded via `next/font/google` for automatic optimization and zero layout shift.
+
+**Typography Scale** (CSS Design Tokens):
+```css
+--font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+--font-accent: 'Caveat', cursive;
+
+--font-xs: 0.75rem;      /* 12px */
+--font-sm: 0.875rem;     /* 14px */
+--font-base: 1rem;       /* 16px */
+--font-lg: 1.125rem;     /* 18px */
+--font-xl: 1.25rem;      /* 20px */
+--font-2xl: 1.5rem;      /* 24px */
+--font-3xl: 1.875rem;    /* 30px */
+--font-4xl: 2.25rem;     /* 36px */
+--font-5xl: 3rem;        /* 48px */
+```
+
+**Reference**: See `docs/design/tokens/DESIGN_TOKENS.md` for complete typography specifications.
+
+### Logo System
+
+**Logo File**: `/public/NMGTOURS.png`
+- **Dimensions**: 1680x1680px (square)
+- **Format**: PNG with transparency
+- **Usage**: Navigation, footer, social media
+
+**Logo Integration in CSS** (`app/globals.css`):
+```css
+.logo {
+  width: 40px;
+  height: 40px;
+  transition: filter var(--duration-300) var(--ease-in-out);
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 8px var(--color-primary));
+}
+
+/* Responsive sizing */
+@media (min-width: 768px) {
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+}
+```
+
+**Logo Usage in Components**:
+```tsx
+import Image from 'next/image'
+
+<Image
+  src="/NMGTOURS.png"
+  alt="NMG Tours Jamaica"
+  width={40}
+  height={40}
+  className="logo"
+/>
+```
+
+**Logo Color Relationships**:
+- Primary emerald green (#10b981) used in logo is our main brand color
+- Logo hover effect uses CSS variables for consistency
+- All brand colors derived from logo color palette
 
 ### Component Patterns
 
@@ -188,6 +285,151 @@ These are loaded via `next/font/google` for automatic optimization and zero layo
 // ✅ Correct - Transparency
 <div className="bg-black/70 backdrop-blur-md">
 ```
+
+### Container & Layout System
+
+**Max Container Width**: 1400px
+- All content should be constrained to this width on larger screens
+- Use padding for mobile/tablet to ensure content doesn't touch edges
+
+```css
+--container-max: 1400px;
+--container-padding: 1rem;  /* 16px */
+```
+
+**Responsive Breakpoints** (Tailwind):
+```css
+--breakpoint-xs: 375px;   /* Mobile small */
+--breakpoint-sm: 640px;   /* Mobile large / Phablet */
+--breakpoint-md: 768px;   /* Tablet */
+--breakpoint-lg: 1024px;  /* Desktop */
+--breakpoint-xl: 1440px;  /* Wide desktop */
+```
+
+**Reference**: See `docs/design/tokens/DESIGN_TOKENS.md` for complete spacing and layout specifications.
+
+## Design System
+
+### Mockups & Wireframes
+
+**Available Mockups** (ASCII wireframes in `docs/design/mockups/`):
+1. **LANDING_PAGE.md** - Homepage with hero, featured tours, testimonials
+2. **TOUR_LISTING.md** - Tour browse page with filters and search
+3. **TOUR_DETAIL.md** - Individual tour page with booking widget
+4. **BOOKING_FLOW.md** - 4-step booking wizard (Date → Details → Payment → Confirmation)
+5. **USER_DASHBOARD.md** - User account dashboard
+
+All mockups show responsive layouts for:
+- Desktop (1440px)
+- Tablet (768px)
+- Mobile (375px)
+
+**Reference**: See `docs/design/README.md` for complete design system overview.
+
+### User Flows
+
+**Available User Journey Diagrams** (`docs/design/flows/`):
+1. **USER_FLOWS.md** - 8 complete user journeys with decision trees
+2. **BOOKING_JOURNEY.md** - Detailed 10-stage booking process
+
+Flows cover:
+- New visitor discovery
+- Tour search and filtering
+- Booking process
+- User authentication
+- Review submission
+- Dashboard management
+- Mobile app flows (future)
+- Admin workflows (future)
+
+### Component Library
+
+**Component Inventory**: 80+ components documented in `docs/design/tokens/COMPONENT_LIBRARY.md`
+
+**Categories**:
+1. **Marketing Components** (12) - Hero, Features, Testimonials, CTA, Gallery, etc.
+2. **Tour Components** (15) - Tour cards, filters, search, detail views, etc.
+3. **Booking Components** (8) - Wizard, date picker, payment forms, confirmation, etc.
+4. **Dashboard Components** (10) - Booking cards, stats, profile settings, etc.
+5. **Form Components** (18) - Inputs, selects, checkboxes, validation, etc.
+6. **Layout Components** (5) - Navigation, Footer, Container, Grid, etc.
+7. **UI Components** (14) - Buttons, modals, tooltips, badges, cards, etc.
+
+**Current Status**: 2/74 implemented (Navigation, Footer)
+
+**Priority Levels**:
+- **High**: Core MVP components (booking flow, tour listings, hero)
+- **Medium**: Enhanced features (reviews, filters, dashboard)
+- **Low**: Nice-to-haves (animations, advanced search, admin tools)
+
+**Reference**: See `docs/design/STATUS.md` for implementation tracking.
+
+## DevOps & CI/CD
+
+### CI/CD Pipeline
+
+**7-Stage Pipeline** (GitHub Actions):
+1. **Code Quality** - ESLint, Prettier, TypeScript
+2. **Security** - npm audit, secret scanning, CodeQL
+3. **Build** - Next.js production build
+4. **Test** - Unit tests, integration tests (when implemented)
+5. **Preview** - Automatic Vercel preview deployments
+6. **Performance** - Lighthouse CI audits
+7. **Deploy** - Production deployment to Vercel
+
+**GitHub Actions Workflows** (`.github/workflows/`):
+- **ci.yml** - Main CI pipeline (runs on push to feature/*, PRs)
+- **preview-deploy.yml** - Automatic preview deployments for PRs
+- **lighthouse.yml** - Performance budgets and audits
+- **security-scan.yml** - Daily security scans
+
+**Performance Budgets** (enforced by Lighthouse CI):
+- Performance: >80
+- Accessibility: >90
+- Best Practices: >80
+- SEO: >80
+- PWA: >50
+
+**Reference**: See `docs/devops/` for complete CI/CD documentation.
+
+### Testing Strategy
+
+**Test Pyramid** (70% unit, 20% integration, 10% E2E):
+- **Unit Tests**: Jest + React Testing Library (planned)
+- **Integration Tests**: API route testing (planned)
+- **E2E Tests**: Playwright for critical user flows (planned)
+
+**Reference**: See `docs/devops/TESTING.md` for testing strategy.
+
+### Branch Strategy
+
+**Protected Branches**:
+- `main` - Production (protected, requires PR, passing checks)
+- `integration/mvp-launch` - Integration branch for MVP (all features merge here first)
+
+**Branch Types**:
+- `feature/*` - New features (merge to integration)
+- `fix/*` - Bug fixes (merge to integration)
+- `hotfix/*` - Emergency fixes (merge to main + integration)
+- `claude/*` - Claude Code sessions (merge to integration)
+
+**Reference**: See `docs/devops/BRANCH_STRATEGY.md` for complete workflow.
+
+### Deployment
+
+**Platform**: Vercel
+- **Production**: Auto-deploy from `main` branch
+- **Preview**: Auto-deploy from PRs to `main` or `integration/*`
+- **Domain**: TBD (pending Vercel configuration)
+
+**Environment Variables** (required):
+- `DATABASE_URL` - PostgreSQL connection string (Supabase)
+- `NEXTAUTH_SECRET` - NextAuth.js secret (planned)
+- `NEXTAUTH_URL` - App URL (planned)
+- `STRIPE_SECRET_KEY` - Stripe API key (planned)
+- `STRIPE_PUBLISHABLE_KEY` - Stripe public key (planned)
+
+**Reference**: See `docs/devops/DEPLOYMENT.md` for deployment guide.
 
 ## Development Guidelines
 
@@ -378,15 +620,68 @@ import Footer from '@/app/components/Footer'
 import { prisma } from '@/lib/prisma'
 ```
 
-## Reference Documentation
+## Documentation Hub
 
-- **Next.js 16**: https://nextjs.org/docs
-- **Tailwind CSS 4**: https://tailwindcss.com/docs
-- **Prisma ORM**: https://www.prisma.io/docs
-- **NextAuth.js**: https://next-auth.js.org/
-- **Stripe Docs**: https://stripe.com/docs
-- **Lucide Icons**: https://lucide.dev/
-- **Project Planning**: See `docs/planning/` folder for roadmap and checklists
+### Internal Documentation
+
+**Design System** (`docs/design/`):
+- [Design System README](docs/design/README.md) - Complete overview
+- [Implementation Status](docs/design/STATUS.md) - Component progress tracking
+- [Design Tokens](docs/design/tokens/DESIGN_TOKENS.md) - CSS variables, colors, typography
+- [Component Library](docs/design/tokens/COMPONENT_LIBRARY.md) - 80+ component inventory
+- [Mockups](docs/design/mockups/) - 5 ASCII wireframe files
+- [User Flows](docs/design/flows/) - Journey diagrams and booking process
+
+**DevOps** (`docs/devops/`):
+- [DevOps README](docs/devops/README.md) - CI/CD architecture overview
+- [CI/CD Setup](docs/devops/CI_CD_SETUP.md) - Complete pipeline documentation
+- [Deployment Guide](docs/devops/DEPLOYMENT.md) - Vercel deployment instructions
+- [Testing Strategy](docs/devops/TESTING.md) - Test pyramid and frameworks
+- [Branch Strategy](docs/devops/BRANCH_STRATEGY.md) - Git workflow and conventions
+
+**Planning** (`docs/planning/`):
+- [Engineering Plan](docs/planning/engineering-plan.md) - 13-week roadmap
+- [Development Checklist](docs/planning/development-checklist.md) - 200+ task items
+
+**Technical** (`docs/technical/`):
+- [Technical Specification](docs/technical/technical-specification.md) - Architecture decisions
+
+**Guides** (`docs/guides/`):
+- [Quick Start Guide](docs/guides/quick-start-guide.md) - Setup instructions
+- [Deployment Guide](docs/guides/deployment-guide.md) - Vercel walkthrough
+
+**Other**:
+- [KICKSTARTER_CLAUDE.md](KICKSTARTER_CLAUDE.md) - Generic template for design/DevOps kickstart
+- [CLAUDE_USAGE.md](CLAUDE_USAGE.md) - Token usage tracking for billing
+- [docs/README.md](docs/README.md) - Documentation hub index
+
+### External Reference Documentation
+
+**Framework & Tools**:
+- [Next.js 16](https://nextjs.org/docs) - React framework
+- [React 19](https://react.dev/) - UI library
+- [Tailwind CSS 4](https://tailwindcss.com/docs) - Styling framework
+- [TypeScript 5](https://www.typescriptlang.org/docs/) - Type system
+- [Lucide Icons](https://lucide.dev/) - Icon library
+
+**Backend & Database**:
+- [Prisma ORM](https://www.prisma.io/docs) - Database toolkit
+- [Supabase](https://supabase.com/docs) - PostgreSQL hosting
+- [NextAuth.js](https://next-auth.js.org/) - Authentication (planned)
+
+**Payments & Services**:
+- [Stripe Docs](https://stripe.com/docs) - Payment processing (planned)
+- [Resend](https://resend.com/docs) - Email service (planned)
+
+**DevOps & Deployment**:
+- [Vercel](https://vercel.com/docs) - Hosting platform
+- [GitHub Actions](https://docs.github.com/actions) - CI/CD
+- [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) - Performance auditing
+
+**Testing**:
+- [Jest](https://jestjs.io/) - Unit testing (planned)
+- [Playwright](https://playwright.dev/) - E2E testing (planned)
+- [React Testing Library](https://testing-library.com/react) - Component testing (planned)
 
 ## Project Identity
 

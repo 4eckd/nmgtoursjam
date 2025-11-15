@@ -1,0 +1,307 @@
+// Prisma schema for NMG Tours Jamaica
+// Database: PostgreSQL (Supabase)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// User Management
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  hashedPassword String?
+  role          Role      @default(USER)
+  phone         String?
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  bookings      Booking[]
+  reviews       Review[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================
+// Tour System
+// ============================================
+
+model Tour {
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  description     String     @db.Text
+  shortDesc       String
+
+  // Pricing
+  price           Decimal    @db.Decimal(10, 2)
+  currency        String     @default("USD")
+
+  // Details
+  duration        Int        // in hours
+  maxGroupSize    Int
+  difficulty      Difficulty @default(EASY)
+
+  // Location
+  meetingPoint    String
+  city            String     @default("Jamaica")
+  coordinates     Json?      // {lat, lng}
+
+  // Media
+  coverImage      String
+  images          Image[]
+
+  // Features
+  included        String[]
+  notIncluded     String[]
+  highlights      String[]
+  whatToBring     String[]
+
+  // Category
+  category        Category   @relation(fields: [categoryId], references: [id])
+  categoryId      String
+
+  // Relations
+  bookings        Booking[]
+  reviews         Review[]
+  availability    Availability[]
+
+  // Status
+  isActive        Boolean    @default(true)
+  featured        Boolean    @default(false)
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("tours")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  tours       Tour[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  caption   String?
+  order     Int      @default(0)
+
+  tour      Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  tourId    String
+
+  createdAt DateTime @default(now())
+
+  @@map("images")
+}
+
+model Availability {
+  id        String   @id @default(cuid())
+  tour      Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  tourId    String
+  date      DateTime
+  slots     Int      // Available slots
+  booked    Int      @default(0)
+  isBlocked Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tourId, date])
+  @@map("availability")
+}
+
+// ============================================
+// Booking System
+// ============================================
+
+model Booking {
+  id              String        @id @default(cuid())
+  bookingNumber   String        @unique @default(cuid())
+
+  // Relations
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  tour            Tour          @relation(fields: [tourId], references: [id])
+  tourId          String
+
+  // Booking Details
+  tourDate        DateTime
+  guests          Int
+  totalPrice      Decimal       @db.Decimal(10, 2)
+  currency        String        @default("USD")
+
+  // Guest Information
+  guestName       String
+  guestEmail      String
+  guestPhone      String
+  specialRequests String?       @db.Text
+
+  // Payment
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentIntentId String?       @unique
+  stripeSessionId String?       @unique
+
+  // Status
+  status          BookingStatus @default(PENDING)
+
+  // Cancellation
+  cancelledAt     DateTime?
+  cancellationReason String?
+  refundAmount    Decimal?      @db.Decimal(10, 2)
+  refundStatus    RefundStatus  @default(NONE)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([tourId])
+  @@index([tourDate])
+  @@index([status])
+  @@map("bookings")
+}
+
+// ============================================
+// Review System
+// ============================================
+
+model Review {
+  id          String   @id @default(cuid())
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  tour        Tour     @relation(fields: [tourId], references: [id])
+  tourId      String
+
+  // Review Content
+  rating      Int      // 1-5 stars
+  title       String?
+  comment     String   @db.Text
+
+  // Media
+  images      String[] // Array of image URLs
+
+  // Moderation
+  isApproved  Boolean  @default(false)
+  isHidden    Boolean  @default(false)
+
+  // Helpful votes
+  helpfulCount Int     @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, tourId]) // One review per user per tour
+  @@index([tourId])
+  @@map("reviews")
+}
+
+// ============================================
+// Enums
+// ============================================
+
+enum Role {
+  USER
+  GUIDE
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MODERATE
+  CHALLENGING
+  EXTREME
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum RefundStatus {
+  NONE
+  REQUESTED
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
