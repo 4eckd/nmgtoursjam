@@ -1,80 +1,11 @@
+'use client'
+
 import Image from 'next/image'
-import ToursClient from '@/app/components/tours/ToursClient'
+import TourCard from '@/app/components/tours/TourCard'
+import { staticTours } from '@/app/data/tours'
 
-interface Tour {
-  id: string
-  title: string
-  slug: string
-  description: string
-  shortDesc: string
-  price: number
-  currency: string
-  duration: number
-  maxGroupSize: number
-  difficulty: string
-  city: string
-  coverImage: string
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
-  featured: boolean
-  createdAt: string
-  _count: {
-    reviews: number
-  }
-}
-
-interface Category {
-  id: string
-  name: string
-  slug: string
-}
-
-async function getTours(): Promise<Tour[]> {
-  try {
-    // In production, use absolute URL with environment variable
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/tours`, {
-      cache: 'no-store', // Always fetch fresh data for tours
-    })
-
-    if (!res.ok) {
-      console.error('Failed to fetch tours:', res.status)
-      return []
-    }
-
-    const data = await res.json()
-    return data.tours || []
-  } catch (error) {
-    console.error('Error fetching tours:', error)
-    return []
-  }
-}
-
-async function getCategories(): Promise<Category[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/categories`, {
-      cache: 'force-cache', // Categories change infrequently
-    })
-
-    if (!res.ok) {
-      console.error('Failed to fetch categories:', res.status)
-      return []
-    }
-
-    const data = await res.json()
-    return data.categories || []
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-    return []
-  }
-}
-
-export default async function ToursPage() {
-  const [tours, categories] = await Promise.all([getTours(), getCategories()])
+export default function ToursPage() {
+  const tours = staticTours
 
   return (
     <div className="min-h-screen">
@@ -90,11 +21,14 @@ export default async function ToursPage() {
         </div>
         <div className="fixed inset-0 bg-black/60 -z-10" />
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat">
-            Discover Jamaica
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 font-caveat text-white">
+            Explore Jamaica Tours
           </h1>
           <p className="text-xl text-zinc-200">
-            Authentic island experiences and unforgettable adventures
+            Discover authentic island experiences
+          </p>
+          <p className="text-emerald-400 mt-4 font-semibold">
+            {tours.length} tours found
           </p>
         </div>
       </section>
@@ -102,7 +36,83 @@ export default async function ToursPage() {
       {/* Tours Listing Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         {tours.length > 0 ? (
-          <ToursClient initialTours={tours} categories={categories} />
+          <>
+            {/* Search and Sort Bar */}
+            <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <div className="w-full md:w-96">
+                <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-lg px-4 py-3 flex items-center gap-3">
+                  <svg
+                    className="w-5 h-5 text-zinc-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search tours..."
+                    className="bg-transparent flex-1 outline-none text-white placeholder-zinc-400"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-center">
+                <span className="text-zinc-400 text-sm">Sort by:</span>
+                <select
+                  disabled
+                  className="bg-black/40 backdrop-blur-md border border-white/20 rounded-lg px-4 py-2 text-white outline-none"
+                >
+                  <option>Price (Low to High)</option>
+                  <option>Price (High to Low)</option>
+                  <option>Duration</option>
+                  <option>Rating</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Tours Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {tours.map((tour) => (
+                <TourCard
+                  key={tour.id}
+                  {...tour}
+                  _count={{ reviews: tour.reviewCount }}
+                />
+              ))}
+            </div>
+
+            {/* Pagination Placeholder */}
+            <div className="mt-12 flex justify-center items-center gap-2">
+              <button
+                disabled
+                className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-lg text-white hover:border-emerald-400/50 transition disabled:opacity-50"
+              >
+                ◀ Previous
+              </button>
+              <button className="px-4 py-2 bg-emerald-400 text-black rounded-lg font-semibold">
+                1
+              </button>
+              <button className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-lg text-white hover:border-emerald-400/50 transition">
+                2
+              </button>
+              <button className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-lg text-white hover:border-emerald-400/50 transition">
+                3
+              </button>
+              <button
+                disabled
+                className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-lg text-white hover:border-emerald-400/50 transition disabled:opacity-50"
+              >
+                Next ▶
+              </button>
+            </div>
+          </>
         ) : (
           <div className="text-center py-16">
             <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/10 p-12 max-w-md mx-auto">
@@ -112,9 +122,6 @@ export default async function ToursPage() {
               <p className="text-zinc-400 mb-6">
                 We're currently updating our tour offerings. Please check back
                 soon!
-              </p>
-              <p className="text-sm text-zinc-500">
-                Make sure the database has been seeded with tour data.
               </p>
             </div>
           </div>

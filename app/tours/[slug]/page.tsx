@@ -1,6 +1,9 @@
+'use client'
+
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { use } from 'react'
 import {
   Clock,
   Users,
@@ -12,7 +15,7 @@ import {
   Star,
   ArrowLeft,
 } from 'lucide-react'
-import ImageGallery from '@/app/components/tours/ImageGallery'
+import { getTourBySlug } from '@/app/data/tours'
 
 interface TourDetailProps {
   params: Promise<{
@@ -20,103 +23,65 @@ interface TourDetailProps {
   }>
 }
 
-interface Tour {
-  id: string
-  title: string
-  slug: string
-  description: string
-  shortDesc: string
-  price: number
-  currency: string
-  duration: number
-  maxGroupSize: number
-  difficulty: string
-  meetingPoint: string
-  city: string
-  coverImage: string
-  included: string[]
-  notIncluded: string[]
-  highlights: string[]
-  whatToBring: string[]
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
-  images: {
-    id: string
-    url: string
-    alt: string | null
-    caption: string | null
-    order: number
-  }[]
-  reviews: {
-    id: string
-    rating: number
-    title: string | null
-    comment: string
-    createdAt: string
-    user: {
-      name: string | null
-      image: string | null
-    }
-  }[]
-  availability: {
-    id: string
-    date: string
-    slots: number
-    booked: number
-  }[]
-}
-
-async function getTour(slug: string): Promise<Tour | null> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/tours/${slug}`, {
-      cache: 'no-store',
-    })
-
-    if (!res.ok) {
-      return null
-    }
-
-    const data = await res.json()
-    return data.tour
-  } catch (error) {
-    console.error('Error fetching tour:', error)
-    return null
-  }
-}
-
-export default async function TourDetailPage({ params }: TourDetailProps) {
-  const { slug } = await params
-  const tour = await getTour(slug)
+export default function TourDetailPage({ params }: TourDetailProps) {
+  const { slug } = use(params)
+  const tour = getTourBySlug(slug)
 
   if (!tour) {
     notFound()
   }
 
-  // Calculate average rating
-  const avgRating =
-    tour.reviews.length > 0
-      ? tour.reviews.reduce((sum, r) => sum + r.rating, 0) / tour.reviews.length
-      : 0
-
-  // Get all images including cover
-  const allImages = [
-    { url: tour.coverImage, alt: tour.title, caption: null },
-    ...tour.images.map((img) => ({
-      url: img.url,
-      alt: img.alt || tour.title,
-      caption: img.caption,
-    })),
+  // Mock reviews for now
+  const reviews = [
+    {
+      id: '1',
+      rating: 5,
+      title: 'Absolutely Amazing Experience!',
+      comment:
+        "Our guide Marcus was incredible! The ride was so peaceful and the scenery was breathtaking. He shared amazing stories about Jamaica and made us feel like family. Highly recommend for a romantic getaway!",
+      createdAt: '2025-11-10',
+      user: {
+        name: 'Sarah T.',
+        image: null,
+      },
+    },
+    {
+      id: '2',
+      rating: 5,
+      title: 'Perfect Family Activity',
+      comment:
+        'Took our kids (ages 8 and 12) and they loved it! Very safe, Marcus was patient with the kids and taught them about the local plants.',
+      createdAt: '2025-11-05',
+      user: {
+        name: 'John M.',
+        image: null,
+      },
+    },
   ]
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Image Gallery */}
-      <section className="relative">
-        <ImageGallery images={allImages} tourTitle={tour.title} />
+      {/* Hero Section with Image */}
+      <section className="relative h-96">
+        <div className="absolute inset-0">
+          <div className="relative h-full w-full bg-gradient-to-br from-emerald-600 to-emerald-900">
+            {tour.coverImage && tour.coverImage.startsWith('/tours/') ? (
+              <Image
+                src={tour.coverImage}
+                alt={tour.title}
+                fill
+                className="object-cover object-center"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-white/50 text-lg">
+                Tour Image Coming Soon
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
 
         {/* Back Button */}
         <Link
@@ -126,6 +91,13 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
           <ArrowLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Back to Tours</span>
         </Link>
+
+        {/* Breadcrumb */}
+        <div className="absolute bottom-6 left-6 z-20">
+          <p className="text-zinc-300 text-sm mb-2">
+            Home &gt; Tours &gt; {tour.title}
+          </p>
+        </div>
       </section>
 
       {/* Tour Details */}
@@ -150,7 +122,8 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
                       : 'bg-red-400/20 text-red-400'
                   }`}
                 >
-                  {tour.difficulty.charAt(0) + tour.difficulty.slice(1).toLowerCase()}
+                  {tour.difficulty.charAt(0) +
+                    tour.difficulty.slice(1).toLowerCase()}
                 </span>
               </div>
 
@@ -161,29 +134,27 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
               <p className="text-xl text-zinc-300 mb-6">{tour.shortDesc}</p>
 
               {/* Rating */}
-              {tour.reviews.length > 0 && (
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-5 h-5 ${
-                          i < Math.round(avgRating)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-zinc-600'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-white font-semibold">
-                    {avgRating.toFixed(1)}
-                  </span>
-                  <span className="text-zinc-400">
-                    ({tour.reviews.length}{' '}
-                    {tour.reviews.length === 1 ? 'review' : 'reviews'})
-                  </span>
+              <div className="flex items-center gap-2 mb-6">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < Math.round(tour.rating)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-zinc-600'
+                      }`}
+                    />
+                  ))}
                 </div>
-              )}
+                <span className="text-white font-semibold">
+                  {tour.rating.toFixed(1)}
+                </span>
+                <span className="text-zinc-400">
+                  ({tour.reviewCount}{' '}
+                  {tour.reviewCount === 1 ? 'review' : 'reviews'})
+                </span>
+              </div>
 
               {/* Quick Info */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -221,7 +192,9 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
             {/* Highlights */}
             {tour.highlights.length > 0 && (
               <div className="mb-12">
-                <h2 className="text-2xl font-bold text-white mb-4">Highlights</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  Highlights
+                </h2>
                 <ul className="space-y-3">
                   {tour.highlights.map((highlight, index) => (
                     <li key={index} className="flex items-start gap-3">
@@ -282,7 +255,7 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
             )}
 
             {/* Meeting Point */}
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-6">
+            <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-6 mb-12">
               <h2 className="text-2xl font-bold text-white mb-4">
                 Meeting Point
               </h2>
@@ -294,6 +267,49 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
                   </p>
                   <p className="text-zinc-400">{tour.city}, Jamaica</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Customer Reviews
+              </h2>
+
+              <div className="space-y-6">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="bg-black/40 backdrop-blur-md border border-white/10 rounded-lg p-6"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < review.rating
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-zinc-600'
+                          }`}
+                        />
+                      ))}
+                      <span className="text-zinc-400 text-sm ml-2">
+                        {new Date(review.createdAt).toLocaleDateString(
+                          'en-US',
+                          { month: 'short', day: 'numeric', year: 'numeric' }
+                        )}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      "{review.title}"
+                    </h3>
+                    <p className="text-zinc-300 mb-3">{review.comment}</p>
+                    <p className="text-zinc-400 text-sm">
+                      — {review.user.name} • Verified Booking
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -322,9 +338,7 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
                     <span className="font-semibold">Available Dates</span>
                   </div>
                   <p className="text-sm text-zinc-400">
-                    {tour.availability.length > 0
-                      ? `${tour.availability.length} dates available in the next 30 days`
-                      : 'Contact us for availability'}
+                    Contact us for availability
                   </p>
                 </div>
 
@@ -335,6 +349,21 @@ export default async function TourDetailPage({ params }: TourDetailProps) {
                 >
                   Book Now
                 </Link>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-zinc-300">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span>Instant Confirmation</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-zinc-300">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span>Free Cancellation (24h notice)</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-zinc-300">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span>Mobile Ticket Accepted</span>
+                  </div>
+                </div>
 
                 <p className="text-xs text-zinc-500 text-center">
                   Contact us to check availability and complete your booking

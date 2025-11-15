@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
+    "build:db": "prisma generate && next build",
     "start": "next start",
     "clean": "pnpm rimraf -i /node_modules/ .next/ && pnpm run build && pnpm run start",
     "lint": "eslint",
