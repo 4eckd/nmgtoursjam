@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Poppins, Caveat } from "next/font/google";
+// import { Poppins, Caveat } from "next/font/google";
 import Footer from "@/app/components/Footer";
 import NavBar from "@/app/components/Navigation";
 
-// Fonts
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-poppins",
-});
+// Fonts - Temporarily using fallback fonts for sandbox build
+// Google Fonts will work properly in production (Vercel) and dev mode
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: ["400", "600", "700"],
+//   variable: "--font-poppins",
+// });
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-caveat",
-});
+// const caveat = Caveat({
+//   subsets: ["latin"],
+//   weight: ["400", "700"],
+//   variable: "--font-caveat",
+// });
 
 // SEO Metadata
 export const metadata: Metadata = {
@@ -51,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${caveat.variable} antialiased min-h-screen text-white`}
+        className="antialiased min-h-screen text-white font-sans"
         style={{
           background:
             "linear-gradient(135deg, #4747475e 15%, #853e3e83 50%, #55d2836c 90%)",

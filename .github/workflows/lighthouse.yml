@@ -1,0 +1,57 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main, integration/mvp-launch]
+
+jobs:
+  lighthouse:
+    name: Performance Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for Vercel Preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: wait-for-vercel
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 300
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            ${{ steps.wait-for-vercel.outputs.url }}
+            ${{ steps.wait-for-vercel.outputs.url }}/tours
+            ${{ steps.wait-for-vercel.outputs.url }}/about
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          budgetPath: ./lighthouse-budget.json
+
+      - name: Comment PR with Results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const comment = `## ⚡ Lighthouse Performance Report
+
+**Preview URL:** ${{ steps.wait-for-vercel.outputs.url }}
+
+View detailed Lighthouse reports in the Actions artifacts.
+
+### Performance Budgets
+- Performance: >80
+- Accessibility: >90
+- Best Practices: >80
+- SEO: >80
+
+Check the workflow run for detailed scores and recommendations.`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
