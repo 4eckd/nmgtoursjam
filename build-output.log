@@ -1,0 +1,6 @@
+
+> nextjs@0.1.0 build /home/user/nmgtoursjam
+> prisma generate && next build
+
+sh: 1: prisma: not found
+ ELIFECYCLE  Command failed.
