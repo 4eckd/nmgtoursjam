@@ -1,7 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+/**
+ * Tour Detail API Route
+ * GET /api/tours/[id] - Get single tour by ID or slug
+ * PATCH /api/tours/[id] - Update tour (admin only - not yet implemented)
+ * DELETE /api/tours/[id] - Soft delete tour (admin only - not yet implemented)
+ */
 
-// GET /api/tours/[id] - Get a single tour by ID or slug
+import { NextRequest } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import {
+  successResponse,
+  errorResponse,
+  handleApiError,
+  handleCORS,
+  createApiError,
+} from '@/lib/api-utils'
+
+// ============================================
+// GET /api/tours/[id]
+// ============================================
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -9,21 +26,30 @@ export async function GET(
   try {
     const { id } = await params
 
+    // Find tour by ID or slug
     const tour = await prisma.tour.findFirst({
       where: {
-        OR: [
-          { id },
-          { slug: id },
-        ],
+        OR: [{ id }, { slug: id }],
         isActive: true,
       },
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            icon: true,
+          },
+        },
         images: {
           orderBy: { order: 'asc' },
         },
         reviews: {
-          where: { isApproved: true, isHidden: false },
+          where: {
+            isApproved: true,
+            isHidden: false,
+          },
           include: {
             user: {
               select: {
@@ -33,6 +59,7 @@ export async function GET(
             },
           },
           orderBy: { createdAt: 'desc' },
+          take: 20, // Limit to 20 most recent reviews
         },
         availability: {
           where: {
@@ -40,79 +67,74 @@ export async function GET(
             isBlocked: false,
           },
           orderBy: { date: 'asc' },
-          take: 30,
+          take: 60, // Next 60 days
+        },
+        _count: {
+          select: {
+            reviews: true,
+            bookings: true,
+          },
         },
       },
     })
 
     if (!tour) {
-      return NextResponse.json(
-        { error: 'Tour not found' },
-        { status: 404 }
-      )
+      throw createApiError('Tour not found', 404, 'TOUR_NOT_FOUND')
     }
 
-    return NextResponse.json({ tour })
-  } catch (error) {
-    console.error('Error fetching tour:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch tour' },
-      { status: 500 }
-    )
-  }
-}
-
-// PATCH /api/tours/[id] - Update a tour (admin only)
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params
-    const body = await request.json()
-
-    // TODO: Add authentication check for admin role
-
-    const tour = await prisma.tour.update({
-      where: { id },
-      data: body,
-      include: {
-        category: true,
-        images: true,
+    // Calculate average rating
+    const avgRating = await prisma.review.aggregate({
+      where: {
+        tourId: tour.id,
+        isApproved: true,
       },
+      _avg: { rating: true },
+      _count: true,
     })
 
-    return NextResponse.json({ tour })
+    // Add calculated fields
+    const tourWithStats = {
+      ...tour,
+      averageRating: avgRating._avg.rating || 0,
+      reviewCount: avgRating._count,
+      bookingCount: tour._count.bookings,
+    }
+
+    return successResponse(tourWithStats)
   } catch (error) {
-    console.error('Error updating tour:', error)
-    return NextResponse.json(
-      { error: 'Failed to update tour' },
-      { status: 500 }
-    )
+    return handleApiError(error)
   }
 }
 
-// DELETE /api/tours/[id] - Delete a tour (admin only)
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params
+// ============================================
+// OPTIONS /api/tours/[id] (CORS)
+// ============================================
 
-    // TODO: Add authentication check for admin role
-
-    await prisma.tour.update({
-      where: { id },
-      data: { isActive: false },
-    })
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error deleting tour:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete tour' },
-      { status: 500 }
-    )
-  }
+export async function OPTIONS() {
+  return handleCORS()
 }
+
+// ============================================
+// PATCH /api/tours/[id] (Future: Admin only)
+// ============================================
+
+// export async function PATCH(
+//   request: NextRequest,
+//   { params }: { params: Promise<{ id: string }> }
+// ) {
+//   // TODO: Implement after authentication is set up
+//   return errorResponse('Not implemented', 501, 'NOT_IMPLEMENTED')
+// }
+
+// ============================================
+// DELETE /api/tours/[id] (Future: Admin only)
+// ============================================
+
+// export async function DELETE(
+//   request: NextRequest,
+//   { params }: { params: Promise<{ id: string }> }
+// ) {
+//   // TODO: Implement after authentication is set up
+//   // Should soft-delete by setting isActive: false
+//   return errorResponse('Not implemented', 501, 'NOT_IMPLEMENTED')
+// }
