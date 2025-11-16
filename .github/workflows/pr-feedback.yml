@@ -64,16 +64,21 @@ jobs:
         id: analyze
         run: |
           # Get changed files
-          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt || echo "" > changed-files.txt
 
-          # Count file types
-          TS_FILES=$(grep -c "\.tsx\?$" changed-files.txt || echo "0")
-          CSS_FILES=$(grep -c "\.css$" changed-files.txt || echo "0")
-          CONFIG_FILES=$(grep -cE "(package\.json|tsconfig\.json|\.yml|\.yaml)" changed-files.txt || echo "0")
+          # Count file types (grep -c returns 0 if no matches, but we need to handle empty files)
+          TS_FILES=$(grep "\.tsx\?$" changed-files.txt 2>/dev/null | wc -l || echo "0")
+          CSS_FILES=$(grep "\.css$" changed-files.txt 2>/dev/null | wc -l || echo "0")
+          CONFIG_FILES=$(grep -E "(package\.json|tsconfig\.json|\.yml|\.yaml)" changed-files.txt 2>/dev/null | wc -l || echo "0")
 
-          echo "TS_FILES=$TS_FILES" >> $GITHUB_OUTPUT
-          echo "CSS_FILES=$CSS_FILES" >> $GITHUB_OUTPUT
-          echo "CONFIG_FILES=$CONFIG_FILES" >> $GITHUB_OUTPUT
+          # Remove any whitespace and ensure we have a number
+          TS_FILES=$(echo "$TS_FILES" | tr -d '[:space:]')
+          CSS_FILES=$(echo "$CSS_FILES" | tr -d '[:space:]')
+          CONFIG_FILES=$(echo "$CONFIG_FILES" | tr -d '[:space:]')
+
+          echo "TS_FILES=${TS_FILES}" >> $GITHUB_OUTPUT
+          echo "CSS_FILES=${CSS_FILES}" >> $GITHUB_OUTPUT
+          echo "CONFIG_FILES=${CONFIG_FILES}" >> $GITHUB_OUTPUT
 
       - name: Generate smart feedback comment
         uses: actions/github-script@v7
