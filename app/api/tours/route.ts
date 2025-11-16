@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getAllTours, getFeaturedTours, getToursByCategory, searchTours } from '@/lib/db'
 
 // GET /api/tours - List all tours with optional filters
 export async function GET(request: NextRequest) {
@@ -12,53 +12,42 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get('maxPrice')
     const search = searchParams.get('search')
 
-    const where: any = { isActive: true }
+    let tours
 
-    if (featured === 'true') {
-      where.featured = true
+    // Handle search queries
+    if (search) {
+      tours = await searchTours(search)
+    }
+    // Handle featured tours
+    else if (featured === 'true') {
+      tours = await getFeaturedTours()
+    }
+    // Handle category filter
+    else if (category) {
+      tours = await getToursByCategory(category)
+    }
+    // Get all tours
+    else {
+      tours = await getAllTours()
     }
 
-    if (category) {
-      where.category = { slug: category }
-    }
+    // Apply client-side filters (for static data mode)
+    let filteredTours = tours
 
     if (difficulty) {
-      where.difficulty = difficulty
+      filteredTours = filteredTours.filter(tour => tour.difficulty === difficulty)
     }
 
     if (minPrice || maxPrice) {
-      where.price = {}
-      if (minPrice) where.price.gte = parseFloat(minPrice)
-      if (maxPrice) where.price.lte = parseFloat(maxPrice)
+      filteredTours = filteredTours.filter(tour => {
+        const price = tour.price
+        if (minPrice && price < parseFloat(minPrice)) return false
+        if (maxPrice && price > parseFloat(maxPrice)) return false
+        return true
+      })
     }
 
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { shortDesc: { contains: search, mode: 'insensitive' } },
-      ]
-    }
-
-    const tours = await prisma.tour.findMany({
-      where,
-      include: {
-        category: true,
-        images: {
-          orderBy: { order: 'asc' },
-          take: 1,
-        },
-        _count: {
-          select: { reviews: true },
-        },
-      },
-      orderBy: [
-        { featured: 'desc' },
-        { createdAt: 'desc' },
-      ],
-    })
-
-    return NextResponse.json({ tours, count: tours.length })
+    return NextResponse.json({ tours: filteredTours, count: filteredTours.length })
   } catch (error) {
     console.error('Error fetching tours:', error)
     return NextResponse.json(
@@ -71,22 +60,13 @@ export async function GET(request: NextRequest) {
 // POST /api/tours - Create a new tour (admin only)
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-
     // TODO: Add authentication check for admin role
+    // TODO: Implement tour creation when database is available
 
-    const tour = await prisma.tour.create({
-      data: {
-        ...body,
-        slug: body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      },
-      include: {
-        category: true,
-        images: true,
-      },
-    })
-
-    return NextResponse.json({ tour }, { status: 201 })
+    return NextResponse.json(
+      { error: 'Tour creation not available in static data mode' },
+      { status: 501 }
+    )
   } catch (error) {
     console.error('Error creating tour:', error)
     return NextResponse.json(

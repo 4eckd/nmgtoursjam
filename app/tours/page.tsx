@@ -1,11 +1,9 @@
-'use client'
-
 import Image from 'next/image'
 import TourCard from '@/app/components/tours/TourCard'
-import { staticTours } from '@/app/data/tours'
+import { getAllTours } from '@/lib/db'
 
-export default function ToursPage() {
-  const tours = staticTours
+export default async function ToursPage() {
+  const tours = await getAllTours()
 
   return (
     <div className="min-h-screen">

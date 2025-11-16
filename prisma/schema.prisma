@@ -1,12 +1,12 @@
 // Prisma schema for NMG Tours Jamaica
-// Database: PostgreSQL (Supabase)
+// Database: SQLite for local development, PostgreSQL (Supabase) for production
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -42,12 +42,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -83,11 +83,11 @@ model Tour {
   id              String     @id @default(cuid())
   title           String
   slug            String     @unique
-  description     String     @db.Text
+  description     String
   shortDesc       String
 
   // Pricing
-  price           Decimal    @db.Decimal(10, 2)
+  price           Float
   currency        String     @default("USD")
 
   // Details
@@ -195,14 +195,14 @@ model Booking {
   // Booking Details
   tourDate        DateTime
   guests          Int
-  totalPrice      Decimal       @db.Decimal(10, 2)
+  totalPrice      Float
   currency        String        @default("USD")
 
   // Guest Information
   guestName       String
   guestEmail      String
   guestPhone      String
-  specialRequests String?       @db.Text
+  specialRequests String?
 
   // Payment
   paymentStatus   PaymentStatus @default(PENDING)
@@ -215,7 +215,7 @@ model Booking {
   // Cancellation
   cancelledAt     DateTime?
   cancellationReason String?
-  refundAmount    Decimal?      @db.Decimal(10, 2)
+  refundAmount    Float?
   refundStatus    RefundStatus  @default(NONE)
 
   createdAt       DateTime      @default(now())
@@ -244,7 +244,7 @@ model Review {
   // Review Content
   rating      Int      // 1-5 stars
   title       String?
-  comment     String   @db.Text
+  comment     String
 
   // Media
   images      String[] // Array of image URLs

@@ -1,150 +1,88 @@
 # Database Setup Guide
 
-## Current Configuration
+This guide explains how to set up the database for NMG Tours Jamaica.
 
-The project is **fully configured** to work with the Supabase PostgreSQL database. The build process now automatically handles Prisma generation.
+## Current Status
 
-### ✅ What's Already Done
+**Mode**: Static Data Fallback
+- The application uses static tour data from `app/data/tours.ts`
+- Database abstraction layer in `lib/db.ts` automatically falls back to static data
+- Build succeeds with warning: "Prisma unavailable, using static data mode"
 
-1. **Database credentials configured** in `.env`
-2. **Prisma schema** ready with all models (Tours, Bookings, Users, etc.)
-3. **Build scripts updated** to auto-generate Prisma client
-4. **Seed data** ready to populate the database
+## Database Architecture
 
-## Build Scripts
+### Abstraction Layer
 
-```json
-{
-  "build": "prisma generate && next build",        // Production build (auto-generates Prisma)
-  "build:static": "next build",                    // Fallback without DB
-  "postinstall": "prisma generate || ...",         // Auto-run after npm/pnpm install
-  "db:generate": "prisma generate",                // Manual Prisma generation
-  "db:push": "prisma db push",                     // Push schema to database
-  "db:seed": "tsx prisma/seed.ts"                  // Seed with tour data
-}
+The `lib/db.ts` file provides a database abstraction layer that:
+1. Attempts to initialize Prisma client
+2. Falls back to static data if Prisma is unavailable
+3. Provides consistent API for data access regardless of mode
+
+### Functions Available
+
+```typescript
+// Get all tours with optional filters
+await getAllTours()
+
+// Get featured tours only
+await getFeaturedTours()
+
+// Get tour by slug
+await getTourBySlug(slug: string)
+
+// Get all categories
+await getAllCategories()
+
+// Get tours by category
+await getToursByCategory(categorySlug: string)
+
+// Search tours by query
+await searchTours(query: string)
 ```
 
-## How It Works
+## Production Database Setup
 
-### Automatic Setup (Recommended)
+### Option 1: Supabase PostgreSQL (Recommended)
 
-When you deploy to Vercel or run locally:
+1. **Create Supabase Project**
+   - Visit https://supabase.com and create a new project
+   - Copy the PostgreSQL connection string
 
-```bash
-pnpm install    # Automatically runs prisma generate via postinstall hook
-pnpm build      # Generates Prisma client + builds Next.js
-```
+2. **Update Environment Variables**
+   ```bash
+   # Update .env file
+   DATABASE_URL="postgresql://postgres:[password]@db.[project-ref].supabase.co:5432/postgres"
+   ```
 
-That's it! No manual steps needed.
+3. **Update Prisma Schema**
+   ```prisma
+   // Change datasource in prisma/schema.prisma
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+   ```
 
-### Manual Setup (Optional)
+4. **Run Migrations**
+   ```bash
+   pnpm db:push
+   ```
 
-If you need to manually set up the database:
+5. **Seed Database**
+   ```bash
+   # Enable seed script
+   mv prisma/seed.ts.disabled prisma/seed.ts
 
-```bash
-# 1. Install dependencies
-pnpm install
+   # Run seeding
+   pnpm db:seed
+   ```
 
-# 2. Generate Prisma client
-pnpm db:generate
+## Switching from Static to Database Mode
 
-# 3. Push schema to database (creates tables)
-pnpm db:push
+Once database is set up, the application automatically detects it - no code changes needed!
 
-# 4. Seed with tour data
-pnpm db:seed
+## Resources
 
-# 5. Build the app
-pnpm build
-```
-
-## Current Environment Limitation
-
-**Note**: The build currently fails in the Claude Code sandbox environment due to network restrictions (403 errors when downloading Prisma engines). This is **specific to the sandbox** and will NOT affect:
-
-- ✅ Local development (on your machine)
-- ✅ Vercel deployments
-- ✅ Any standard Node.js environment
-
-The configuration is **correct and production-ready**.
-
-## Static Data Mode (Fallback)
-
-The app includes a fallback "static data mode" that works without a database:
-
-- Uses `app/data/tours.ts` for tour data
-- All pages functional with 6 sample tours
-- Perfect for development/testing without DB access
-- Build with: `pnpm build:static`
-
-## Environment Variables
-
-Required in `.env` (already configured):
-
-```env
-# Prisma Database URLs
-DATABASE_URL="postgres://..."              # Pooled connection (for queries)
-DIRECT_URL="postgres://..."                # Direct connection (for migrations)
-
-# Supabase Public Keys
-NEXT_PUBLIC_SUPABASE_URL="https://..."
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJ..."
-```
-
-## Database Schema
-
-The Prisma schema includes:
-
-- **User** - User accounts with authentication
-- **Tour** - Tour listings with details, pricing, availability
-- **Category** - Tour categories (Water Activities, Adventure, etc.)
-- **Booking** - User bookings with status tracking
-- **Review** - Tour reviews and ratings
-- **TourImage** - Gallery images for tours
-- **Availability** - Daily availability and slot management
-
-All models are fully defined in `prisma/schema.prisma`.
-
-## Vercel Deployment
-
-When deploying to Vercel:
-
-1. **Environment variables** are set in Vercel dashboard
-2. **Build command**: `pnpm build` (uses our configured script)
-3. **Prisma automatically generates** during build
-4. **Database schema pushed** on first deployment
-
-No additional configuration needed!
-
-## Troubleshooting
-
-### "Module '@prisma/client' has no exported member 'PrismaClient'"
-
-**Cause**: Prisma client not generated yet
-**Solution**: Run `pnpm db:generate` or `pnpm install`
-
-### "Error: P1001: Can't reach database server"
-
-**Cause**: Database URL incorrect or database not accessible
-**Solution**: Check `.env` file has correct `DATABASE_URL`
-
-### Build works locally but fails on Vercel
-
-**Cause**: Environment variables not set in Vercel
-**Solution**: Add all `.env` variables to Vercel project settings
-
-## Next Steps
-
-Once deployed or running locally:
-
-1. **Visit**: `http://localhost:3000` or your Vercel URL
-2. **Database tables** auto-created on first migration
-3. **Seed data**: Run `pnpm db:seed` to add sample tours
-4. **Start developing**: Add new tours, bookings, features!
-
----
-
-**Configuration Status**: ✅ Complete and Production-Ready
-**Database**: Supabase PostgreSQL
-**ORM**: Prisma 6.19.0
-**Last Updated**: 2025-11-15
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [NMG Tours - CLAUDE.md](./CLAUDE.md) for complete project documentation

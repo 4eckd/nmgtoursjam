@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getTourBySlug } from '@/lib/db'
 
 // GET /api/tours/[id] - Get a single tour by ID or slug
 export async function GET(
@@ -9,41 +9,8 @@ export async function GET(
   try {
     const { id } = await params
 
-    const tour = await prisma.tour.findFirst({
-      where: {
-        OR: [
-          { id },
-          { slug: id },
-        ],
-        isActive: true,
-      },
-      include: {
-        category: true,
-        images: {
-          orderBy: { order: 'asc' },
-        },
-        reviews: {
-          where: { isApproved: true, isHidden: false },
-          include: {
-            user: {
-              select: {
-                name: true,
-                image: true,
-              },
-            },
-          },
-          orderBy: { createdAt: 'desc' },
-        },
-        availability: {
-          where: {
-            date: { gte: new Date() },
-            isBlocked: false,
-          },
-          orderBy: { date: 'asc' },
-          take: 30,
-        },
-      },
-    })
+    // Try to get by slug (most common), fallback to ID
+    const tour = await getTourBySlug(id)
 
     if (!tour) {
       return NextResponse.json(
@@ -68,21 +35,13 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params
-    const body = await request.json()
-
     // TODO: Add authentication check for admin role
+    // TODO: Implement tour updates when database is available
 
-    const tour = await prisma.tour.update({
-      where: { id },
-      data: body,
-      include: {
-        category: true,
-        images: true,
-      },
-    })
-
-    return NextResponse.json({ tour })
+    return NextResponse.json(
+      { error: 'Tour updates not available in static data mode' },
+      { status: 501 }
+    )
   } catch (error) {
     console.error('Error updating tour:', error)
     return NextResponse.json(
@@ -98,16 +57,13 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params
-
     // TODO: Add authentication check for admin role
+    // TODO: Implement tour deletion when database is available
 
-    await prisma.tour.update({
-      where: { id },
-      data: { isActive: false },
-    })
-
-    return NextResponse.json({ success: true })
+    return NextResponse.json(
+      { error: 'Tour deletion not available in static data mode' },
+      { status: 501 }
+    )
   } catch (error) {
     console.error('Error deleting tour:', error)
     return NextResponse.json(

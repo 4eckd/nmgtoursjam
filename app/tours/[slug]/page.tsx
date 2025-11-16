@@ -1,9 +1,6 @@
-'use client'
-
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { use } from 'react'
 import {
   Clock,
   Users,
@@ -15,7 +12,7 @@ import {
   Star,
   ArrowLeft,
 } from 'lucide-react'
-import { getTourBySlug } from '@/app/data/tours'
+import { getTourBySlug } from '@/lib/db'
 
 interface TourDetailProps {
   params: Promise<{
@@ -23,9 +20,9 @@ interface TourDetailProps {
   }>
 }
 
-export default function TourDetailPage({ params }: TourDetailProps) {
-  const { slug } = use(params)
-  const tour = getTourBySlug(slug)
+export default async function TourDetailPage({ params }: TourDetailProps) {
+  const { slug } = await params
+  const tour = await getTourBySlug(slug)
 
   if (!tour) {
     notFound()
