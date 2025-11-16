@@ -732,9 +732,9 @@ Closes #[issue number]
 | M1.4 Contact Form | 1 | ⏳ Not Started | 0% | - | - | - |
 | M2.1 Database Schema | 2 | ✅ Complete | 100% | claude/review-commits | - | e3de747 |
 | M2.2 Seed Data | 2 | ✅ Complete | 100% | claude/review-commits | - | e3de747 |
-| M2.3 API Routes | 2 | 🚧 In Progress | 0% | claude/review-commits | - | - |
-| M3.1 Tour Listing | 3 | 🔒 Blocked (M2.3) | 0% | - | - | - |
-| M3.2 Tour Detail | 3 | 🔒 Blocked (M2.3) | 0% | - | - | - |
+| M2.3 API Routes | 2 | ✅ Complete | 100% | claude/review-commits | - | 7c8a424 |
+| M3.1 Tour Listing | 3 | ⏳ Not Started | 0% | - | - | - |
+| M3.2 Tour Detail | 3 | ⏳ Not Started | 0% | - | - | - |
 | M4.1 NextAuth Setup | 4 | ⏳ Not Started | 0% | - | - | - |
 | M4.2 Login/Signup | 4 | 🔒 Blocked (M4.1) | 0% | - | - | - |
 | M4.3 User Dashboard | 4 | 🔒 Blocked (M4.2) | 0% | - | - | - |
@@ -753,12 +753,12 @@ Closes #[issue number]
 
 ```
 Track 1: Marketing & Content      [░░░░░░░░░░] 0/4 (0%)
-Track 2: Database & Infrastructure [███████░░░] 2/3 (67%)  🔥 CRITICAL PATH - M2.3 In Progress
-Track 3: Tours System              [░░░░░░░░░░] 0/2 (0%)   🔒 Blocked by M2.3
+Track 2: Database & Infrastructure [██████████] 3/3 (100%)  ✅ COMPLETE - Critical path unblocked!
+Track 3: Tours System              [░░░░░░░░░░] 0/2 (0%)   🎯 Ready to start
 Track 4: Authentication            [░░░░░░░░░░] 0/3 (0%)
-Track 5: Booking & Payments        [░░░░░░░░░░] 0/3 (0%)   🔒 Blocked by M2.3, M3.x, M4.x
+Track 5: Booking & Payments        [░░░░░░░░░░] 0/3 (0%)   🔒 Blocked by M3.x, M4.x
 
-Overall MVP Progress: [███░░░░░░░] 2/15 (13%)
+Overall MVP Progress: [████░░░░░░] 3/15 (20%)
 ```
 
 ### Weekly Velocity Tracking
