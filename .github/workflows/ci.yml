@@ -7,8 +7,8 @@ on:
     branches: [main, integration/*]
 
 env:
-  NODE_VERSION: '18'
-  PNPM_VERSION: '8'
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
 
 jobs:
   quality:

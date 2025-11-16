@@ -1,0 +1,220 @@
+name: PR Feedback & Recommendations
+
+on:
+  pull_request:
+    branches: [main, integration/*]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  analyze-and-comment:
+    name: Analyze PR & Provide Feedback
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run build and capture output
+        id: build
+        continue-on-error: true
+        run: |
+          pnpm build 2>&1 | tee build-output.txt
+          echo "BUILD_EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Run security audit
+        id: audit
+        continue-on-error: true
+        run: |
+          pnpm audit --json > audit-output.json || true
+          VULN_COUNT=$(jq '.metadata.vulnerabilities | values | add' audit-output.json 2>/dev/null || echo "0")
+          echo "VULN_COUNT=$VULN_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check for secrets in diff
+        id: secrets
+        continue-on-error: true
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD > diff.txt
+
+          # Check for common secret patterns
+          SECRETS_FOUND=0
+          if grep -iE "(api[_-]?key|secret|password|token|credentials)" diff.txt; then
+            SECRETS_FOUND=1
+          fi
+          echo "SECRETS_FOUND=$SECRETS_FOUND" >> $GITHUB_OUTPUT
+
+      - name: Analyze changed files
+        id: analyze
+        run: |
+          # Get changed files
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed-files.txt || echo "" > changed-files.txt
+
+          # Count file types (grep -c returns 0 if no matches, but we need to handle empty files)
+          TS_FILES=$(grep "\.tsx\?$" changed-files.txt 2>/dev/null | wc -l || echo "0")
+          CSS_FILES=$(grep "\.css$" changed-files.txt 2>/dev/null | wc -l || echo "0")
+          CONFIG_FILES=$(grep -E "(package\.json|tsconfig\.json|\.yml|\.yaml)" changed-files.txt 2>/dev/null | wc -l || echo "0")
+
+          # Remove any whitespace and ensure we have a number
+          TS_FILES=$(echo "$TS_FILES" | tr -d '[:space:]')
+          CSS_FILES=$(echo "$CSS_FILES" | tr -d '[:space:]')
+          CONFIG_FILES=$(echo "$CONFIG_FILES" | tr -d '[:space:]')
+
+          echo "TS_FILES=${TS_FILES}" >> $GITHUB_OUTPUT
+          echo "CSS_FILES=${CSS_FILES}" >> $GITHUB_OUTPUT
+          echo "CONFIG_FILES=${CONFIG_FILES}" >> $GITHUB_OUTPUT
+
+      - name: Generate smart feedback comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildExitCode = '${{ steps.build.outputs.BUILD_EXIT_CODE }}';
+            const vulnCount = '${{ steps.audit.outputs.VULN_COUNT }}';
+            const secretsFound = '${{ steps.secrets.outputs.SECRETS_FOUND }}';
+            const tsFiles = '${{ steps.analyze.outputs.TS_FILES }}';
+            const configFiles = '${{ steps.analyze.outputs.CONFIG_FILES }}';
+
+            let comment = '## 🤖 Automated PR Analysis\n\n';
+            let hasIssues = false;
+            let recommendations = [];
+
+            // Build status
+            if (buildExitCode === '0') {
+              comment += '### ✅ Build Status: PASSING\n';
+              comment += 'Great job! Your code compiles successfully.\n\n';
+            } else {
+              hasIssues = true;
+              comment += '### ❌ Build Status: FAILED\n';
+              comment += '**Action Required:** Fix build errors before merging.\n\n';
+              comment += '**Common fixes:**\n';
+              comment += '- Check TypeScript errors: `pnpm build`\n';
+              comment += '- Verify all imports are correct\n';
+              comment += '- Make sure dependencies are installed: `pnpm install`\n\n';
+              recommendations.push('Run `pnpm build` locally to see detailed error messages');
+            }
+
+            // Security audit
+            if (vulnCount > 0) {
+              hasIssues = true;
+              comment += `### ⚠️ Security: ${vulnCount} Vulnerabilities Found\n`;
+              comment += '**Action Required:** Address security vulnerabilities.\n\n';
+              comment += '**How to fix:**\n';
+              comment += '```bash\n';
+              comment += 'npm audit          # See details\n';
+              comment += 'npm audit fix      # Auto-fix (if available)\n';
+              comment += '```\n\n';
+              recommendations.push('Review and fix security vulnerabilities before merging');
+            } else {
+              comment += '### 🔒 Security: No Vulnerabilities\n';
+              comment += 'All dependencies are secure. Nice!\n\n';
+            }
+
+            // Secret detection
+            if (secretsFound === '1') {
+              hasIssues = true;
+              comment += '### 🚨 ALERT: Possible Secrets Detected\n';
+              comment += '**CRITICAL:** Your changes may contain API keys, tokens, or passwords.\n\n';
+              comment += '**Immediate actions:**\n';
+              comment += '1. Review your changes for exposed credentials\n';
+              comment += '2. Remove any secrets from code\n';
+              comment += '3. Add sensitive values to `.env` (which is gitignored)\n';
+              comment += '4. If secrets were committed, rotate them immediately\n\n';
+              recommendations.push('🔴 Check for exposed secrets in your code');
+            }
+
+            // File analysis hints
+            if (tsFiles > 5) {
+              comment += '### 📊 Large PR Detected\n';
+              comment += `You've modified ${tsFiles} TypeScript files. Consider:\n`;
+              comment += '- Breaking this into smaller PRs for easier review\n';
+              comment += '- Adding tests for new functionality\n';
+              comment += '- Documenting major changes\n\n';
+              recommendations.push('Consider splitting large PRs into smaller, focused changes');
+            }
+
+            if (configFiles > 0) {
+              comment += '### ⚙️ Configuration Changes Detected\n';
+              comment += '**Important:** You modified configuration files.\n\n';
+              comment += '**Checklist:**\n';
+              comment += '- [ ] Updated `.env.example` if needed\n';
+              comment += '- [ ] Documented new environment variables\n';
+              comment += '- [ ] Verified build still works\n';
+              comment += '- [ ] Updated deployment docs if needed\n\n';
+            }
+
+            // Recommendations section
+            if (recommendations.length > 0) {
+              comment += '### 💡 Recommendations\n\n';
+              recommendations.forEach((rec, i) => {
+                comment += `${i + 1}. ${rec}\n`;
+              });
+              comment += '\n';
+            }
+
+            // Merge readiness
+            if (hasIssues) {
+              comment += '### 🚦 Merge Status: **NOT READY**\n';
+              comment += '⚠️ Please address the issues above before merging.\n\n';
+            } else {
+              comment += '### 🚦 Merge Status: **READY** ✅\n';
+              comment += 'All automated checks passed! Ready for review.\n\n';
+            }
+
+            // Footer
+            comment += '---\n';
+            comment += '*🤖 This comment was automatically generated by GitHub Actions*\n';
+            comment += `*Last updated: ${new Date().toISOString()}*`;
+
+            // Post comment
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Add status labels
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildExitCode = '${{ steps.build.outputs.BUILD_EXIT_CODE }}';
+            const vulnCount = '${{ steps.audit.outputs.VULN_COUNT }}';
+
+            let labels = [];
+
+            if (buildExitCode !== '0') {
+              labels.push('build-failing');
+            } else {
+              labels.push('build-passing');
+            }
+
+            if (vulnCount > 0) {
+              labels.push('security-review-needed');
+            }
+
+            // Add labels
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: labels
+              });
+            }

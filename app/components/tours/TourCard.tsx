@@ -20,6 +20,10 @@ interface TourCardProps {
   }
   featured?: boolean
   reviewCount?: number
+  rating?: number
+  _count?: {
+    reviews: number
+  }
 }
 
 export default function TourCard({
@@ -35,7 +39,12 @@ export default function TourCard({
   coverImage,
   category,
   featured = false,
+  reviewCount,
+  rating,
+  _count,
 }: TourCardProps) {
+  // Support both reviewCount prop and _count.reviews from database
+  const totalReviews = reviewCount || _count?.reviews || 0
   return (
     <div className="group bg-black/40 backdrop-blur-md rounded-lg overflow-hidden border border-white/10 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/20">
       {/* Tour Image */}
