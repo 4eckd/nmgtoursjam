@@ -55,10 +55,33 @@ pnpm db:seed
 ```
 
 This creates:
-- 3 tour categories (Rafting, Culture, Adventure)
-- 3 sample tours with images
-- 30 days of availability for each tour
-- 1 admin user (`admin@nmgtoursjam.com`)
+- **5 tour categories**: Rafting, Cultural, Beach & Water, Adventure, Food & Drink
+- **12 authentic Jamaica tours** with full details, pricing, and highlights
+- **3 test users**: Admin, Guide, and User (all password: `Password123!`)
+- **60 days of availability** for each tour (720 records total)
+- **24 tour reviews** (2 per tour) with realistic feedback
+- **Tour images** (placeholder paths, 3 per tour)
+
+### Test User Credentials
+| Role  | Email                 | Password      |
+|-------|-----------------------|---------------|
+| Admin | admin@nmgtours.com    | Password123!  |
+| Guide | guide@nmgtours.com    | Password123!  |
+| User  | user@example.com      | Password123!  |
+
+### Sample Tours Included
+1. Rio Grande Bamboo Rafting ($85, 2hr) - Featured
+2. Martha Brae River Rafting ($75, 2hr) - Featured
+3. Bob Marley Nine Mile Pilgrimage ($95, 6hr) - Featured
+4. Dunn's River Falls Climbing ($65, 3hr) - Featured
+5. Seven Mile Beach Sunset ($55, 8hr)
+6. Kingston Food & Culture Tour ($70, 4hr)
+7. Blue Mountain Coffee Tour ($85, 5hr)
+8. Luminous Lagoon Night Tour ($45, 2hr) - Featured
+9. Appleton Estate Rum Tour ($80, 4hr)
+10. YS Falls & Black River Safari ($90, 7hr)
+11. Mystic Mountain Adventure ($95, 4hr)
+12. Accompong Maroon Heritage ($75, 5hr)
 
 ### 5. Explore Data (Optional)
 
