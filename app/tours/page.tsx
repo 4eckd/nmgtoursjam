@@ -120,7 +120,7 @@ export default function ToursPage() {
                 No Tours Available
               </h3>
               <p className="text-zinc-400 mb-6">
-                We're currently updating our tour offerings. Please check back
+                We&apos;re currently updating our tour offerings. Please check back
                 soon!
               </p>
             </div>

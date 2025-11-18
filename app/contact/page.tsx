@@ -55,7 +55,7 @@ export default function ContactPage() {
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '' });
       setErrors({});
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -90,7 +90,7 @@ export default function ContactPage() {
             Get In Touch
           </h1>
           <p className="text-xl text-zinc-200 max-w-2xl mx-auto">
-            Have questions? We'd love to hear from you
+            Have questions? We&apos;d love to hear from you
           </p>
         </div>
       </section>
@@ -107,7 +107,7 @@ export default function ContactPage() {
             {submitStatus === 'success' && (
               <div className="mb-6 p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-lg">
                 <p className="text-emerald-300 font-semibold">
-                  Thank you for your message! We'll get back to you soon.
+                  Thank you for your message! We&apos;ll get back to you soon.
                 </p>
               </div>
             )}

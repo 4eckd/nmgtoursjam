@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get('maxPrice')
     const search = searchParams.get('search')
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = { isActive: true }
 
     if (featured === 'true') {

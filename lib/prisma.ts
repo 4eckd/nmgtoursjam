@@ -1,16 +1,19 @@
 // Conditional Prisma import to support builds without generated client
 // This allows the app to work in environments where Prisma engines can't be downloaded
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let prisma: any
 
 try {
-  // Dynamic require to avoid TypeScript compilation errors
+  // Dynamic require to avoid TypeScript compilation errors when Prisma client isn't generated
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { PrismaClient } = require('@prisma/client')
 
   // PrismaClient is attached to the `global` object in development to prevent
   // exhausting your database connection limit.
   // Learn more: https://pris.ly/d/help/next-js-best-practices
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globalForPrisma = global as unknown as { prisma: any }
 
   prisma =
@@ -20,7 +23,7 @@ try {
     })
 
   if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-} catch (error) {
+} catch {
   // Prisma client not generated - using null placeholder
   // App will use static data mode (app/data/tours.ts)
   prisma = null
