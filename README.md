@@ -41,16 +41,17 @@ This repository powers [nmgtoursjam.com](https://nmgtoursjam.com/) — a modern,
 ## 🎯 MVP Progress
 
 ```
-TRACK 1 - Marketing & Content:     ████████████░░░░░░░░░░░░  50% 🚧
+TRACK 1 - Marketing & Content:     ███████████████░░░░░░░░░  62.5% 🚧
 TRACK 2 - Database Infrastructure: ████████████████████████ 100% ✅
 TRACK 3 - Tours System:            ████████████████░░░░░░░░  80% 🚧
 TRACK 4 - Authentication:          ████████████░░░░░░░░░░░░  60% 🚧
 TRACK 5 - Booking & Payments:      ░░░░░░░░░░░░░░░░░░░░░░░░   0% ⏳
 
-Overall MVP Progress:              ████████████████░░░░░░░░  68%
+Overall MVP Progress:              ████████████████░░░░░░░░  70.5%
 ```
 
 **Recently Completed** ✅:
+- ✅ **Enhanced Hero Section** (M1.1) - Modern two-column design with animated gradients
 - ✅ Database abstraction layer with static data fallback
 - ✅ Prisma schema (10 models: Users, Tours, Bookings, Reviews, etc.)
 - ✅ API routes with database integration (tours, categories)
