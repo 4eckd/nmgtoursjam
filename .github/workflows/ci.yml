@@ -96,8 +96,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Next.js
-        run: pnpm build
+      - name: Build Next.js (CI mode)
+        run: pnpm build:ci
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Check bundle size
         run: |
