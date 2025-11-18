@@ -1,0 +1,89 @@
+name: Database Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Database action to perform'
+        required: true
+        type: choice
+        options:
+          - push-schema
+          - run-migrations
+          - seed-data
+          - test-connection
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  database-operation:
+    name: Database - ${{ github.event.inputs.action }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Test Database Connection
+        if: github.event.inputs.action == 'test-connection' || github.event.inputs.action == 'push-schema' || github.event.inputs.action == 'run-migrations'
+        run: pnpm db:test:quick
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Push Schema to Database
+        if: github.event.inputs.action == 'push-schema'
+        run: pnpm db:push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Run Database Migrations
+        if: github.event.inputs.action == 'run-migrations'
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Seed Database
+        if: github.event.inputs.action == 'seed-data'
+        run: pnpm db:seed
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Operation Summary
+        if: always()
+        run: |
+          echo "### Database Operation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Action**: ${{ github.event.inputs.action }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment**: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by**: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
