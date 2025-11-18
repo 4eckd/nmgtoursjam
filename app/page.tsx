@@ -1,7 +1,5 @@
-'use client'
-
-import Image from 'next/image'
 import Link from 'next/link'
+import Hero from '@/app/components/Hero'
 import TourCard from '@/app/components/tours/TourCard'
 import { getFeaturedTours } from '@/app/data/tours'
 import { Star, Users, CheckCircle, Leaf } from 'lucide-react'
@@ -11,76 +9,8 @@ export default function Home() {
 
   return (
     <div className="relative w-full overflow-hidden text-white font-poppins">
-      {/* Background Image - Fixed position for full viewport coverage */}
-      <div className="fixed inset-0 -z-20">
-        <Image
-          src="/NMGTOURS.png"
-          alt="NMG Tours Background"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* Gradient Overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/70 to-emerald-800/95 -z-10" />
-
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 font-caveat">
-          Authentic Island Experiences
-        </h1>
-        <div className="w-32 h-1 bg-emerald-400 mb-6 rounded-full"></div>
-        <p className="text-xl md:text-2xl mb-8 max-w-2xl text-zinc-200">
-          Discover Jamaica's hidden gems with local guides. Rafting tours,
-          cultural jams, and island adventures.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <Link
-            href="/tours"
-            className="px-8 py-4 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition text-lg"
-          >
-            Explore Tours →
-          </Link>
-          <Link
-            href="/gallery"
-            className="px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-full hover:bg-white/20 transition text-lg border border-white/20"
-          >
-            View Gallery
-          </Link>
-        </div>
-
-        {/* Search Bar Placeholder */}
-        <div className="w-full max-w-2xl mt-8">
-          <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-full px-6 py-4 flex items-center gap-3">
-            <svg
-              className="w-5 h-5 text-zinc-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search tours, locations, experiences..."
-              className="bg-transparent flex-1 outline-none text-white placeholder-zinc-400"
-              disabled
-            />
-            <button
-              disabled
-              className="px-6 py-2 bg-emerald-400 text-black font-semibold rounded-full hover:bg-emerald-300 transition text-sm"
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       {/* Featured Tours Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 py-16">
