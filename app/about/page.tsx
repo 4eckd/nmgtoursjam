@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
@@ -33,10 +34,10 @@ export default function AboutPage() {
           </h2>
           <div className="prose prose-lg prose-invert max-w-none">
             <p className="text-zinc-300 leading-relaxed mb-4">
-              Welcome to NMG Tours Jamaica - your trusted partner for discovering the authentic beauty and culture of Jamaica. Founded by local guides with deep roots in the island's rich heritage, we specialize in creating unforgettable experiences that go beyond typical tourist attractions.
+              Welcome to NMG Tours Jamaica - your trusted partner for discovering the authentic beauty and culture of Jamaica. Founded by local guides with deep roots in the island&apos;s rich heritage, we specialize in creating unforgettable experiences that go beyond typical tourist attractions.
             </p>
             <p className="text-zinc-300 leading-relaxed mb-4">
-              What started as a passion project to share Jamaica's hidden gems has grown into a premier tour operation, serving thousands of satisfied guests from around the world. Our commitment remains the same: to provide genuine, locally-guided experiences that showcase the real Jamaica.
+              What started as a passion project to share Jamaica&apos;s hidden gems has grown into a premier tour operation, serving thousands of satisfied guests from around the world. Our commitment remains the same: to provide genuine, locally-guided experiences that showcase the real Jamaica.
             </p>
           </div>
         </div>
@@ -62,7 +63,7 @@ export default function AboutPage() {
                 Local Expertise
               </h3>
               <p className="text-zinc-300">
-                All our guides are born and raised in Jamaica, bringing insider knowledge and authentic stories you won't find in guidebooks.
+                All our guides are born and raised in Jamaica, bringing insider knowledge and authentic stories you won&apos;t find in guidebooks.
               </p>
             </div>
             <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/10">
@@ -78,7 +79,7 @@ export default function AboutPage() {
                 Sustainable Tourism
               </h3>
               <p className="text-zinc-300">
-                We're committed to eco-friendly practices that protect Jamaica's natural beauty for future generations while supporting local communities.
+                We&apos;re committed to eco-friendly practices that protect Jamaica&apos;s natural beauty for future generations while supporting local communities.
               </p>
             </div>
             <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-white/10">
@@ -103,7 +104,7 @@ export default function AboutPage() {
                 Bamboo Rafting Adventures
               </h3>
               <p className="text-zinc-300">
-                Experience the tranquil beauty of Jamaica's rivers on a traditional bamboo raft, guided by expert raftsmen who share stories of the island's history and culture.
+                Experience the tranquil beauty of Jamaica&apos;s rivers on a traditional bamboo raft, guided by expert raftsmen who share stories of the island&apos;s history and culture.
               </p>
             </div>
             <div className="bg-gradient-to-r from-emerald-900/50 to-black/30 backdrop-blur-sm rounded-lg p-6 border border-emerald-500/20">
@@ -119,7 +120,7 @@ export default function AboutPage() {
                 Natural Wonders
               </h3>
               <p className="text-zinc-300">
-                Discover Jamaica's breathtaking natural beauty - from pristine beaches and cascading waterfalls to lush rainforests teeming with tropical wildlife.
+                Discover Jamaica&apos;s breathtaking natural beauty - from pristine beaches and cascading waterfalls to lush rainforests teeming with tropical wildlife.
               </p>
             </div>
           </div>
@@ -148,12 +149,12 @@ export default function AboutPage() {
           <p className="text-white/90 mb-6 text-lg">
             Join us for an unforgettable adventure that will create memories to last a lifetime.
           </p>
-          <a
+          <Link
             href="/tours"
             className="inline-block px-8 py-4 bg-white text-emerald-900 font-semibold rounded-full hover:bg-zinc-100 transition text-lg"
           >
             Browse Our Tours
-          </a>
+          </Link>
         </div>
       </section>
     </div>

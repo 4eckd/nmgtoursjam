@@ -40,11 +40,12 @@ export default function TourCard({
   category,
   featured = false,
   reviewCount,
-  rating,
+  rating: _rating,
   _count,
 }: TourCardProps) {
   // Support both reviewCount prop and _count.reviews from database
-  const totalReviews = reviewCount || _count?.reviews || 0
+  // TODO: Display review count and rating in the UI
+  const _totalReviews = reviewCount || _count?.reviews || 0
   return (
     <div className="group bg-black/40 backdrop-blur-md rounded-lg overflow-hidden border border-white/10 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/20">
       {/* Tour Image */}

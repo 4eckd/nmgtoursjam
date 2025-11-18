@@ -92,7 +92,7 @@ export default function SignupPage() {
           router.refresh()
         }
       }, 1500)
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.')
       setIsLoading(false)
     }
@@ -106,7 +106,7 @@ export default function SignupPage() {
       await signIn('google', {
         callbackUrl: '/dashboard',
       })
-    } catch (err) {
+    } catch {
       setError('Failed to sign up with Google')
       setIsLoading(false)
     }

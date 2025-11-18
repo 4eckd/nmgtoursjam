@@ -20,14 +20,14 @@ export default function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold text-gray-900">1. Agreement to Terms</h2>
             <p className="text-gray-700">
-              By accessing or using NMGToursJam ("we," "our," or "us"), including our website, mobile applications, and services (collectively, the "Services"), you agree to be bound by these Terms & Conditions ("Terms"). If you do not agree to these Terms, please do not use our Services.
+              By accessing or using NMGToursJam (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), including our website, mobile applications, and services (collectively, the &quot;Services&quot;), you agree to be bound by these Terms & Conditions (&quot;Terms&quot;). If you do not agree to these Terms, please do not use our Services.
             </p>
           </section>
 
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold text-gray-900">2. Services Description</h2>
             <p className="text-gray-700">
-              NMGToursJam provides an online platform that connects tourists with local tour guides and hosts for tours and cultural experiences ("Jams") in New Mexico. We facilitate bookings but are not the direct provider of tours or events unless specifically stated.
+              NMGToursJam provides an online platform that connects tourists with local tour guides and hosts for tours and cultural experiences (&quot;Jams&quot;) in New Mexico. We facilitate bookings but are not the direct provider of tours or events unless specifically stated.
             </p>
             <div className="ml-4 space-y-2">
               <h3 className="font-semibold">Our Services include:</h3>
@@ -141,7 +141,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold text-gray-900">11. Disclaimers and Limitations of Liability</h2>
             <div className="space-y-3 text-gray-700">
               <p><strong>11.1 Platform Role:</strong> NMGToursJam is a platform that facilitates connections between guests and tour providers. We are not responsible for the actions, omissions, or negligence of any tour guides, hosts, or guests.</p>
-              <p><strong>11.2 No Warranties:</strong> The Services are provided "as is" without warranties of any kind, either express or implied.</p>
+              <p><strong>11.2 No Warranties:</strong> The Services are provided &quot;as is&quot; without warranties of any kind, either express or implied.</p>
               <p><strong>11.3 Assumption of Risk:</strong> You acknowledge that travel and tourism activities involve inherent risks. You voluntarily assume all risks associated with participating in tours and jams.</p>
               <p><strong>11.4 Limitation of Liability:</strong> To the fullest extent permitted by law, NMGToursJam shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Services.</p>
               <p><strong>11.5 Maximum Liability:</strong> Our total liability to you for any claims shall not exceed the amount you paid to us in the twelve months preceding the claim.</p>
@@ -151,7 +151,7 @@ export default function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold text-gray-900">12. Indemnification</h2>
             <p className="text-gray-700">
-              You agree to indemnify, defend, and hold harmless NMGToursJam, its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorney's fees) arising from your use of the Services, violation of these Terms, or violation of any rights of another.
+              You agree to indemnify, defend, and hold harmless NMGToursJam, its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorney&apos;s fees) arising from your use of the Services, violation of these Terms, or violation of any rights of another.
             </p>
           </section>
 

@@ -210,7 +210,7 @@ export default function TourDetailPage({ params }: TourDetailProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  What's Included
+                  What&apos;s Included
                 </h2>
                 <ul className="space-y-3">
                   {tour.included.map((item, index) => (
@@ -224,7 +224,7 @@ export default function TourDetailPage({ params }: TourDetailProps) {
 
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  What's Not Included
+                  What&apos;s Not Included
                 </h2>
                 <ul className="space-y-3">
                   {tour.notIncluded.map((item, index) => (
@@ -302,7 +302,7 @@ export default function TourDetailPage({ params }: TourDetailProps) {
                     </div>
 
                     <h3 className="text-lg font-bold text-white mb-2">
-                      "{review.title}"
+                      &quot;{review.title}&quot;
                     </h3>
                     <p className="text-zinc-300 mb-3">{review.comment}</p>
                     <p className="text-zinc-400 text-sm">

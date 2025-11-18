@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 // GET /api/bookings - List user's bookings
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    // TODO: Get userId from session
+    // TODO: Get userId from session (will use _request once implemented)
     const userId = 'temp-user-id'
 
     const bookings = await prisma.booking.findMany({

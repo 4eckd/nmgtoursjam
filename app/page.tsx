@@ -32,7 +32,7 @@ export default function Home() {
         </h1>
         <div className="w-32 h-1 bg-emerald-400 mb-6 rounded-full"></div>
         <p className="text-xl md:text-2xl mb-8 max-w-2xl text-zinc-200">
-          Discover Jamaica's hidden gems with local guides. Rafting tours,
+          Discover Jamaica&apos;s hidden gems with local guides. Rafting tours,
           cultural jams, and island adventures.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -160,7 +160,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-3 text-white">Eco-Friendly</h3>
             <p className="text-zinc-300">
-              Sustainable tourism practices protecting Jamaica's beauty
+              Sustainable tourism practices protecting Jamaica&apos;s beauty
             </p>
           </div>
         </div>
@@ -185,8 +185,8 @@ export default function Home() {
           </div>
 
           <blockquote className="text-xl md:text-2xl text-center text-zinc-200 mb-6 italic">
-            "Best rafting experience ever! Our guide Marcus was amazing and
-            showed us the real Jamaica. Can't wait to come back!"
+            &quot;Best rafting experience ever! Our guide Marcus was amazing and
+            showed us the real Jamaica. Can&apos;t wait to come back!&quot;
           </blockquote>
 
           <p className="text-center text-zinc-400">

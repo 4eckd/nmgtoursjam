@@ -15,7 +15,7 @@ interface ImageGalleryProps {
   tourTitle: string
 }
 
-export default function ImageGallery({ images, tourTitle }: ImageGalleryProps) {
+export default function ImageGallery({ images, tourTitle: _tourTitle }: ImageGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
