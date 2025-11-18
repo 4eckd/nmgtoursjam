@@ -5,11 +5,11 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "DATABASE_URL": "@database_url"
+    "DATABASE_URL": "@DATABASE_URL"
   },
   "build": {
     "env": {
-      "DATABASE_URL": "@database_url",
+      "DATABASE_URL": "@DATABASE_URL",
       "PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING": "1"
     }
   }
