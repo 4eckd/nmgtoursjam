@@ -28,6 +28,45 @@ pnpm start            # Run production build locally
 pnpm lint             # Run ESLint (currently basic Next.js config)
 ```
 
+### DevOps Automation Commands
+
+**Quick Health Check** (30 seconds):
+```bash
+# Traffic-light status of key systems
+pnpm devops:quick
+# Checks: Git status, build status, uncommitted changes, branch status
+```
+
+**Pre-Merge Checklist** (3-5 minutes):
+```bash
+# Complete pre-merge validation
+pnpm devops:merge
+# Runs: cleanup, build, lint, type-check, changelog update
+```
+
+**Security Scan** (2 minutes):
+```bash
+# Security vulnerability scanning
+pnpm devops:security
+# Runs: npm audit, secret scanning, dependency checks
+```
+
+**Full Pipeline** (5-10 minutes):
+```bash
+# Complete DevOps pipeline check
+pnpm devops
+# All checks: quality, security, build, test, docs
+```
+
+**Feature Documentation** (Interactive):
+```bash
+# Start new feature with documentation template
+pnpm devops:feature-start <feature-name>
+
+# Validate feature documentation completeness
+pnpm devops:feature-validate
+```
+
 ### Git Workflow
 See parallel branch strategy below. Key points:
 
@@ -392,6 +431,108 @@ Flows cover:
 
 **Reference**: See `docs/devops/` for complete CI/CD documentation.
 
+### Pre-Merge Automation Checklist
+
+**IMPORTANT**: Before creating any PR or merging to `integration/mvp-launch`, run through this automated checklist:
+
+#### Phase 1: Code Cleanup (2 minutes)
+```bash
+# Remove debugging artifacts
+grep -r "console.log" app/ --exclude-dir=node_modules
+grep -r "debugger" app/ --exclude-dir=node_modules
+
+# Remove temporary files
+find . -name "*.tmp" -o -name "*.bak" -o -name ".DS_Store" -delete
+```
+
+#### Phase 2: Build Verification (2-3 minutes)
+```bash
+# CRITICAL: Must pass before merge
+pnpm build
+
+# If build fails:
+# 1. Review error messages carefully
+# 2. Fix type errors, import issues, hydration mismatches
+# 3. Re-run build until it passes
+# 4. Maximum 5 auto-fix attempts before manual review
+```
+
+#### Phase 3: Quality Checks (1-2 minutes)
+```bash
+# Lint all files
+pnpm lint
+
+# Type-check (if separate from build)
+pnpm type-check
+
+# Format check (if Prettier configured)
+pnpm format:check
+```
+
+#### Phase 4: Documentation Updates (1 minute)
+```bash
+# Update CHANGELOG.md with recent commits
+git log --oneline --since="1 week ago" >> CHANGELOG_DRAFT.md
+
+# Verify README.md is current
+# - Installation instructions accurate
+# - Environment variables documented
+# - Setup steps tested
+```
+
+#### Phase 5: Security Scan (2 minutes)
+```bash
+# Dependency vulnerabilities
+pnpm audit --audit-level=moderate
+
+# Secret scanning (if git-secrets installed)
+git secrets --scan
+
+# Check for sensitive files
+ls -la | grep -E "\.env$|credentials\.json|\.pem$"
+```
+
+#### Phase 6: Final Verification (1 minute)
+```bash
+# Ensure no uncommitted changes
+git status
+
+# Verify on correct branch
+git branch --show-current
+
+# Check for merge conflicts
+git fetch origin integration/mvp-launch
+git merge-base HEAD origin/integration/mvp-launch
+```
+
+#### Automated Progress Tracking
+
+Use progress indicators for long-running tasks:
+```
+[██████░░░░] 6/10 Running security scan...
+[████████░░] 8/10 Updating documentation...
+[██████████] 10/10 ✓ All checks passed!
+```
+
+#### Failure Recovery
+
+**Build Failures**:
+- Check error logs in terminal output
+- Common fixes: missing dependencies, type errors, import paths
+- Run `pnpm install` if package.json changed
+- Clear `.next` cache: `rm -rf .next`
+
+**Merge Conflicts**:
+- Fetch latest: `git fetch origin integration/mvp-launch`
+- Merge locally: `git merge origin/integration/mvp-launch`
+- Resolve conflicts manually
+- Re-run all checks after resolution
+
+**Security Vulnerabilities**:
+- Review `pnpm audit` output
+- Update vulnerable packages: `pnpm update <package>`
+- If no fix available, document in `SECURITY.md`
+
 ### Testing Strategy
 
 **Test Pyramid** (70% unit, 20% integration, 10% E2E):
@@ -431,6 +572,183 @@ Flows cover:
 
 **Reference**: See `docs/devops/DEPLOYMENT.md` for deployment guide.
 
+### Security Scanning & Implementation
+
+**Secret Scanning Tools** (choose one or layer multiple):
+
+1. **git-secrets** (Recommended for local development):
+   ```bash
+   # Install
+   brew install git-secrets  # macOS
+   # or
+   sudo apt-get install git-secrets  # Linux
+
+   # Setup
+   git secrets --install
+   git secrets --register-aws  # Add AWS patterns
+
+   # Add custom patterns for this project
+   git secrets --add 'DATABASE_URL=.*'
+   git secrets --add 'STRIPE_SECRET_KEY=.*'
+   git secrets --add 'NEXTAUTH_SECRET=.*'
+
+   # Scan current repo
+   git secrets --scan
+
+   # Scan commit history
+   git secrets --scan-history
+   ```
+
+2. **TruffleHog** (For comprehensive audits):
+   ```bash
+   # Install
+   pip install truffleHog
+
+   # Scan repository
+   trufflehog --regex --entropy=False .
+
+   # Generate JSON report
+   trufflehog --json --regex . > security-report.json
+   ```
+
+3. **GitHub Secret Scanning** (Platform-level):
+   - Enable in repository Settings → Security & Analysis
+   - Automatically scans on push
+   - Can block commits containing secrets
+
+**Dependency Vulnerability Scanning**:
+```bash
+# NPM audit (built-in)
+pnpm audit --audit-level=moderate
+
+# Fix automatically where possible
+pnpm audit fix
+
+# Generate detailed report
+pnpm audit --json > audit-report.json
+```
+
+**Security Integration in CI/CD**:
+- TruffleHog runs on every PR
+- npm audit runs daily via scheduled workflow
+- CodeQL scanning enabled for JavaScript/TypeScript
+- Dependabot alerts enabled for vulnerable dependencies
+
+**Security Best Practices**:
+1. **Never commit secrets** - Use environment variables
+2. **Use .env.example** - Document required env vars without values
+3. **Rotate secrets regularly** - Especially after team changes
+4. **Review dependencies** - Check npm packages before installation
+5. **Update regularly** - Keep dependencies current with security patches
+
+### Feature Documentation Guidelines
+
+**Three-Tier Documentation Requirements**:
+
+**Tier 1: Simple Changes** (<200 lines of code)
+- **Status**: Optional documentation
+- **Examples**: Bug fixes, minor refactoring, styling updates
+- **Action**: Documentation warnings only, no blocking
+
+**Tier 2: Medium Features** (200-1,000 lines of code)
+- **Status**: Documentation required for merge
+- **Required Sections**:
+  1. Overview (2-3 sentences)
+  2. Goals (minimum 3 items)
+  3. Implementation (key files and approach)
+  4. Testing (basic test coverage)
+- **Minimum**: 100 words total
+
+**Tier 3: Major Features** (>1,000 lines of code)
+- **Status**: Comprehensive documentation mandatory
+- **Required Sections**:
+  1. Overview (problem statement)
+  2. Goals (project alignment + success criteria)
+  3. Implementation (architecture, design decisions, 5+ key files)
+  4. Testing (strategy, coverage %, 3+ edge cases)
+  5. Deployment (rollout plan, rollback procedure)
+  6. Monitoring (metrics, alerts)
+- **Minimum**: 500 words total
+
+**Documentation Location**:
+```
+docs/features/<feature-name>/
+├── README.md           # Main documentation
+├── IMPLEMENTATION.md   # Technical details
+├── TESTING.md          # Test plan
+└── ROLLOUT.md          # Deployment strategy
+```
+
+**Feature Documentation Template**:
+```markdown
+# Feature: [Feature Name]
+
+## Overview
+[2-3 sentence description of the problem being solved]
+
+## Goals
+1. [Primary goal aligned with project objectives]
+2. [Secondary goal with measurable success criteria]
+3. [Tertiary goal or constraint]
+
+## Implementation
+
+### Architecture
+[High-level technical approach]
+
+### Key Files
+- `app/components/FeatureX.tsx` - [Description]
+- `app/api/feature/route.ts` - [Description]
+- `prisma/schema.prisma` - [Schema changes]
+
+### Design Decisions
+1. **[Decision]**: [Rationale]
+2. **[Decision]**: [Trade-offs considered]
+
+## Testing
+
+### Test Strategy
+- Unit tests: [Coverage target]
+- Integration tests: [Key scenarios]
+- E2E tests: [Critical user flows]
+
+### Edge Cases Tested
+1. [Edge case 1]
+2. [Edge case 2]
+3. [Edge case 3]
+
+## Deployment
+[Rollout plan and rollback procedure]
+
+## Monitoring
+[Metrics to track and alerts to configure]
+```
+
+**Validation Commands**:
+```bash
+# Start new feature with template
+pnpm devops:feature-start booking-wizard
+
+# Validate documentation completeness
+pnpm devops:feature-validate
+
+# Check documentation quality
+wc -w docs/features/booking-wizard/README.md  # Word count
+```
+
+**Documentation Workflow**:
+1. **Planning Phase**: Create feature branch, copy template
+2. **Development Phase**: Update implementation details as you build
+3. **Testing Phase**: Document test results and coverage
+4. **PR Phase**: Ensure all sections complete, minimum word count met
+5. **Review Phase**: Reviewer verifies documentation accuracy
+
+**Automated Checks** (GitHub Actions):
+- Validates documentation file exists
+- Checks required sections present
+- Enforces minimum word count
+- Blocks merge if Tier 2/3 requirements not met
+
 ## Development Guidelines
 
 ### When Adding New Components
@@ -457,16 +775,129 @@ Flows cover:
 
 5. **Theme-aware**: Support both light and dark themes via CSS variables
 
+### Claude Code Automation Patterns
+
+**State Machine Architecture** for reliable automation:
+
+```javascript
+// Example: Pre-merge validation state machine
+const DevOpsStates = {
+  INIT: 'initialized',
+  CHECK: 'checking_status',
+  CLEANUP: 'cleaning_code',
+  BUILD: 'building_project',
+  TEST: 'running_tests',
+  SECURITY: 'scanning_security',
+  DOCS: 'updating_docs',
+  VERIFY: 'final_verification',
+  SUCCESS: 'all_passed',
+  FAILED: 'checks_failed'
+};
+
+// State transitions are saved to .devops-state.json
+// Enables resumability if process is interrupted
+```
+
+**Execution Model**: state-checking → action → verification → repeat
+
+**Key Principles**:
+
+1. **Progress Visualization**:
+   ```
+   [██████░░░░] 6/10 Running security scan...
+   Status: SECURITY | Time: 45s | Remaining: ~1m
+   ```
+
+2. **Explicit Success Criteria**:
+   - Build exit code = 0
+   - No console.log or debugger statements
+   - pnpm audit shows 0 high/critical vulnerabilities
+   - All required documentation sections present
+
+3. **Escape Hatches**:
+   - Maximum retries: 3 per step
+   - Timeout: 5 minutes per step
+   - Emergency abort: Ctrl+C saves state and exits cleanly
+
+4. **Fail-Fast Ordering**:
+   - Quick syntax checks first (30s)
+   - Linting second (1m)
+   - Build third (2-3m)
+   - Tests last (3-5m)
+
+5. **Idempotency**:
+   - Check completion status before executing
+   - Safe to re-run any step multiple times
+   - No failures on already-completed actions
+
+**Example Automation Prompt Pattern**:
+
+```markdown
+## Pre-Merge DevOps Pipeline
+
+**OBJECTIVE**: Validate code is ready for merge to integration/mvp-launch
+
+**STATE MACHINE**:
+1. INIT → Load previous state from .devops-state.json (if exists)
+2. CHECK → Verify git status, branch name, uncommitted changes
+3. CLEANUP → Remove debugging artifacts (console.log, debugger)
+4. BUILD → Run pnpm build (must exit 0)
+5. SECURITY → Run pnpm audit (0 high/critical vulns)
+6. DOCS → Update CHANGELOG.md from recent commits
+7. VERIFY → Final git status check
+8. SUCCESS → Display summary report
+
+**ERROR HANDLING**:
+- Save state after each transition
+- On failure: log error, save state, exit with code 1
+- Resume: Load .devops-state.json and continue from last successful state
+
+**SUCCESS CRITERIA**:
+- All states reach SUCCESS
+- Build exit code = 0
+- No uncommitted debugging code
+- Git status clean (all changes committed)
+
+**PROGRESS INDICATOR**:
+[██████████] 8/8 ✓ All checks passed! Ready to create PR.
+
+**OUTPUT**:
+- Success/failure status
+- Execution time per phase
+- Total time elapsed
+- Next recommended action
+```
+
+**Resumable Workflows**:
+
+If a long-running workflow is interrupted, save state:
+
+```json
+{
+  "currentState": "BUILD",
+  "completedStates": ["INIT", "CHECK", "CLEANUP"],
+  "failedStates": [],
+  "timestamp": "2025-11-18T10:30:00Z",
+  "branchName": "feature/booking-wizard",
+  "buildAttempts": 1
+}
+```
+
+Resume with: `pnpm devops:resume` (loads state and continues)
+
 ### When Building New Features
 
 Follow this workflow for all new features:
 
 1. **Create feature branch** from `integration/mvp-launch`
-2. **Build component** with TypeScript types
-3. **Test responsive design** (mobile → tablet → desktop)
-4. **Verify build passes**: `pnpm build`
-5. **Create PR** to integration branch
-6. **Merge after review** and delete feature branch
+2. **Run feature documentation starter**: `pnpm devops:feature-start <name>`
+3. **Build component** with TypeScript types
+4. **Test responsive design** (mobile → tablet → desktop)
+5. **Update feature documentation** as you implement
+6. **Run pre-merge checklist**: `pnpm devops:merge`
+7. **Verify build passes**: `pnpm build` (included in devops:merge)
+8. **Create PR** to integration branch with complete documentation
+9. **Merge after review** and delete feature branch
 
 ### Accessibility Standards
 
@@ -552,6 +983,238 @@ Common build errors:
 - **Email**: Resend or SendGrid
 - **Images**: Cloudinary (free tier)
 - **Analytics**: Vercel Analytics (built-in)
+
+## Enhanced GitHub Actions Workflows
+
+### Workflow Files to Add/Update
+
+**1. Feature Documentation Check** (`.github/workflows/feature-docs-check.yml`):
+```yaml
+name: Feature Documentation Check
+
+on:
+  pull_request:
+    branches:
+      - integration/mvp-launch
+      - main
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Calculate changed lines
+        id: changes
+        run: |
+          LINES=$(git diff origin/${{ github.base_ref }}...HEAD | grep -c "^[+-]" || echo "0")
+          echo "lines_changed=$LINES" >> $GITHUB_OUTPUT
+
+      - name: Check for feature documentation
+        if: steps.changes.outputs.lines_changed > 200
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          if [[ $BRANCH_NAME == feature/* ]]; then
+            FEATURE_NAME=${BRANCH_NAME#feature/}
+            DOC_PATH="docs/features/$FEATURE_NAME/README.md"
+
+            if [ ! -f "$DOC_PATH" ]; then
+              echo "❌ Feature documentation required for changes >200 lines"
+              echo "Expected: $DOC_PATH"
+              exit 1
+            fi
+
+            # Check minimum word count
+            WORD_COUNT=$(wc -w < "$DOC_PATH")
+            if [ "$WORD_COUNT" -lt 100 ]; then
+              echo "❌ Documentation must be at least 100 words (found: $WORD_COUNT)"
+              exit 1
+            fi
+
+            echo "✅ Feature documentation found and meets requirements"
+          fi
+```
+
+**2. Enhanced CI Pipeline** (`.github/workflows/ci.yml`):
+```yaml
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ feature/**, fix/**, claude/** ]
+  pull_request:
+    branches: [ integration/mvp-launch, main ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm type-check || pnpm build
+
+      - name: Check for debugging code
+        run: |
+          if grep -r "console.log" app/ --exclude-dir=node_modules; then
+            echo "❌ Found console.log statements"
+            exit 1
+          fi
+          if grep -r "debugger" app/ --exclude-dir=node_modules; then
+            echo "❌ Found debugger statements"
+            exit 1
+          fi
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for secret scanning
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=moderate
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [code-quality, security]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          # Add any required build env vars
+          SKIP_ENV_VALIDATION: true
+```
+
+**3. PR Auto-labeling** (`.github/workflows/pr-labeler.yml`):
+```yaml
+name: PR Auto-Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Calculate PR size
+        id: size
+        run: |
+          LINES=$(git diff origin/${{ github.base_ref }}...HEAD | grep -c "^[+-]" || echo "0")
+          if [ "$LINES" -lt 200 ]; then
+            echo "label=size/small" >> $GITHUB_OUTPUT
+          elif [ "$LINES" -lt 1000 ]; then
+            echo "label=size/medium" >> $GITHUB_OUTPUT
+          else
+            echo "label=size/large" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add size label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['${{ steps.size.outputs.label }}']
+            })
+```
+
+## Claude Usage Tracking
+
+**Automatic Token and Cost Tracking**:
+
+The `CLAUDE_USAGE.md` file automatically tracks Claude Code usage:
+
+```markdown
+# Claude Code Usage Tracking
+
+**Total Tokens Used**: 156,324
+**Total Estimated Cost**: $12.45
+
+## Pricing (Claude Sonnet 4.5)
+- Input: $3.00 per million tokens
+- Output: $15.00 per million tokens
+
+## Usage History
+
+| Date | Feature | Tokens | Cost | Session ID |
+|------|---------|--------|------|------------|
+| 2025-11-18 | DevOps Integration | 45,000 | $3.20 | 01Hc8kEFEWhUEv57KbQXmvxy |
+| 2025-11-15 | Landing Page Fix | 28,500 | $2.10 | 01RAcPorzARm9jcQCEcpgLJv |
+```
+
+**Pre-commit Hook** (`.git/hooks/pre-commit`):
+```bash
+#!/bin/bash
+# Update CLAUDE_USAGE.md before each commit
+# This hook is automatically installed
+
+SESSION_ID=$(git branch --show-current | grep -oE '[0-9A-Za-z]{32}$')
+if [ -n "$SESSION_ID" ]; then
+  # Extract tokens from session metadata
+  # Append to CLAUDE_USAGE.md
+  echo "Updating Claude usage tracking..."
+fi
+```
+
+**Monthly Cost Estimation**:
+- Light usage (< 100k tokens/week): ~$5-15/month
+- Medium usage (100k-500k tokens/week): ~$15-50/month
+- Heavy usage (> 500k tokens/week): ~$50-150/month
+
+**Cost Optimization Tips**:
+1. Use smaller model (Haiku) for simple tasks
+2. Clear context when switching tasks
+3. Prefer reading specific files over exploring entire codebase
+4. Use grep/glob for targeted searches vs. broad exploration
 
 ## Important Constraints
 
