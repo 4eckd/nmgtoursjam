@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/4eckd/nmgtoursjam/actions/workflows/version-tag.yml"><img src="https://github.com/4eckd/nmgtoursjam/actions/workflows/version-tag.yml/badge.svg" alt="Version Tagging and Release"></a>
   <a href="https://nmgtoursjam.com/"><img src="https://img.shields.io/github/deployments/4eckd/nmgtoursjam/Production?label=Deployment&logo=vercel&logoColor=white" alt="Deployment Status"></a>
   <a href="https://github.com/4eckd/nmgtoursjam/commits/main"><img src="https://img.shields.io/github/last-commit/4eckd/nmgtoursjam?logo=git&label=Last%20Commit" alt="Last Commit"></a>
   <a href="https://github.com/4eckd/nmgtoursjam/stargazers"><img src="https://img.shields.io/github/stars/4eckd/nmgtoursjam?style=social" alt="Stars"></a>
